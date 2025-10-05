@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="upload-box">
+    <h2>Upload Coconut Tapping Audio</h2>
+    <form id="uploadForm" action="{{ url_for('backend.classify') }}" method="post" enctype="multipart/form-data">
+        <input type="file" id="audioFile" name="audio" accept=".wav,.mp3,.ogg">
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if result %}
+        <div class="result-box 
+            {% if 'Mature' in result %} mature
+            {% elif 'Premature' in result %} premature
+            {% elif 'Immature' in result %} immature
+            {% endif %}">
+            <h3>Classification Result:</h3>
+            <p>{{ result }}</p>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+const fileInput = document.getElementById("audioFile");
+const form = document.getElementById("uploadForm");
+
+// Check on submit
+form.addEventListener("submit", function(e) {
+    if (!fileInput.value) {
+        e.preventDefault(); // stop form from submitting
+        fileInput.classList.add("error-border");
+        alert("Please upload a file before submitting.");
+    }
+});
+
+// Reset border when file is chosen
+fileInput.addEventListener("change", function() {
+    if (fileInput.value) {
+        fileInput.classList.remove("error-border");
+    }
+});
+</script>
+{% endblock %}

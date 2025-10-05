@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="home-hero">
+  <div class="slider">
+
+    <!-- Slides -->
+    <div class="slides">
+      <article class="slide active" style="background-image:url({{ url_for('static', filename='images/coconut1.jpeg') }})">
+        <div class="slide__overlay"></div>
+        <div class="slide__content">
+          <span class="eyebrow">DESIGN</span>
+          <h1><b>Slider 01</b></h1>
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, neque? Lorem ipsum dolor sit amet.</p>
+        </div>
+      </article>
+
+      <article class="slide" style="background-image:url({{ url_for('static', filename='images/coconutfarming.jpg') }})">
+        <div class="slide__overlay"></div>
+        <div class="slide__content">
+          <span class="eyebrow">TECH</span>
+          <h1><b>Slider 02</b></h1>
+          <p>Quasi, cumque! Cupiditate, perspiciatis. Tempora illum fuga repellat porro earum veniam.</p>
+        </div>
+      </article>
+
+      <article class="slide" style="background-image:url({{ url_for('static', filename='images/cat2.jpg') }})">
+        <div class="slide__overlay"></div>
+        <div class="slide__content">
+          <span class="eyebrow">NATURE</span>
+          <h1><b>Slider 03</b></h1>
+          <p>Aspernatur unde ratione, consequuntur minus dicta aliquid veritatis maxime ullam.</p>
+        </div>
+      </article>
+
+      <article class="slide" style="background-image:url({{ url_for('static', filename='images/team.jpg') }})">
+        <div class="slide__overlay"></div>
+        <div class="slide__content">
+          <span class="eyebrow">INSIGHT</span>
+          <h1><b>Slider 04</b></h1>
+          <p>Dolor sit amet consectetur, adipisicing elit. Quam voluptatum repellat eligendi.</p>
+        </div>
+      </article>
+    </div>
+
+    <!-- Arrows -->
+    <div class="nav">
+      <button class="nav-btn prev" aria-label="Previous slide">&lt;</button>
+      <button class="nav-btn next" aria-label="Next slide">&gt;</button>
+    </div>
+
+    <!-- Thumbnails -->
+    <div class="thumbs">
+      <button class="thumb active" data-index="0">
+        <img src="{{ url_for('static', filename='images/coconut1.jpeg') }}" alt="Slide 01">
+        <span>Name Slider</span>
+      </button>
+      <button class="thumb" data-index="1">
+        <img src="{{ url_for('static', filename='images/coconutfarming.jpg') }}" alt="Slide 02">
+        <span>Name Slider</span>
+      </button>
+      <button class="thumb" data-index="2">
+        <img src="{{ url_for('static', filename='images/cat2.jpg') }}" alt="Slide 03">
+        <span>Name Slider</span>
+      </button>
+      <button class="thumb" data-index="3">
+        <img src="{{ url_for('static', filename='images/team.jpg') }}" alt="Slide 04">
+        <span>Name Slider</span>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(() => {
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const thumbs = Array.from(document.querySelectorAll('.thumb'));
+  const prev = document.querySelector('.nav-btn.prev');
+  const next = document.querySelector('.nav-btn.next');
+
+  let i = 0;
+  let timer;
+  const INTERVAL = 6000;
+  let isHovering = false;
+  let isInView = true;
+
+  function setActive(idx){
+    i = (idx + slides.length) % slides.length;
+    slides.forEach((s, k)=> s.classList.toggle('active', k === i));
+    thumbs.forEach((t, k)=> t.classList.toggle('active', k === i));
+    restart();
+  }
+
+  function play(){
+    clearTimeout(timer);
+    if (!isHovering && isInView) {
+      timer = setTimeout(()=> setActive(i+1), INTERVAL);
+    }
+  }
+  function pause(){ clearTimeout(timer); }
+  function restart(){ pause(); play(); }
+
+  /* Buttons */
+  prev.addEventListener('click', ()=> setActive(i-1));
+  next.addEventListener('click', ()=> setActive(i+1));
+
+  /* Thumbs */
+  thumbs.forEach(t => t.addEventListener('click', () => setActive(+t.dataset.index)));
+
+  /* Hover pause */
+  const slider = document.querySelector('.slider');
+  slider.addEventListener('mouseenter', () => { isHovering = true; pause(); });
+  slider.addEventListener('mouseleave', () => { isHovering = false; play(); });
+
+  /* Pause when not visible (e.g., user scrolls away or tab hidden) */
+  const io = new IntersectionObserver(
+    entries => { isInView = entries[0].isIntersecting; isInView ? play() : pause(); },
+    { threshold: 0.3 }
+  );
+  io.observe(slider);
+
+  document.addEventListener('visibilitychange', () => {
+    isInView = !document.hidden;
+    isInView ? play() : pause();
+  });
+
+  /* Keyboard arrows */
+  window.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') setActive(i+1);
+    if (e.key === 'ArrowLeft') setActive(i-1);
+  });
+
+  /* Touch swipe */
+  let startX = 0, dx = 0;
+  slider.addEventListener('touchstart', e => { startX = e.touches[0].clientX; dx = 0; }, {passive:true});
+  slider.addEventListener('touchmove',  e => { dx = e.touches[0].clientX - startX; }, {passive:true});
+  slider.addEventListener('touchend',   () => {
+    if (Math.abs(dx) > 40) { dx < 0 ? setActive(i+1) : setActive(i-1); }
+  });
+
+  play(); // kick things off
+})();
+</script>
+
+
+{% endblock %}

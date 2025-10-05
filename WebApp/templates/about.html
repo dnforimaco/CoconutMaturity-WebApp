@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- HERO / KNOW MORE -->
+<section class="about-hero" id="know-more">
+  <div class="about-hero__overlay"></div>
+  <div class="about-hero__content container">
+    <h1>Know More<br><span>About Us</span></h1>
+    <p>Discover our mission & vision—and meet the people behind the project.</p>
+    <div class="about-hero__actions">
+      <a href="#mission-vision" class="btn btn--primary">Mission &amp; Vision</a>
+      <a href="#team" class="btn btn--ghost">Meet the Team</a>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION & VISION -->
+<section id="mission-vision" class="section container">
+  <header class="section__head">
+    <h2>Mission &amp; Vision</h2>
+    <p class="section__sub">What drives us forward</p>
+  </header>
+
+  <div class="mv-grid">
+    <article class="card mv-card">
+      <h3 class="badge badge--green">Mission</h3>
+      <p>To create accessible and reliable coconut maturity detection tools that bring confidence and peace of mind to farmers.
+        <br><br>We aim to empower communities with technology that makes harvest decisions faster, smarter, and more sustainable—helping farmers reduce uncertainty, improve efficiency, and secure better livelihoods for their families.</p>
+    </article>
+
+    <article class="card mv-card">
+      <h3 class="badge badge--gold">Vision</h3>
+      <p>A future where innovation and agriculture walk hand in hand.
+        <br><br>We envision a world where farmers no longer carry the heavy burden of guesswork, but instead thrive with the support of intelligent, compassionate technology—leading to healthier harvests, reduced waste, and stronger, more resilient communities that can nourish generations to come.</p>
+    </article>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team" class="section container">
+  <header class="section__head">
+    <h2>Meet the Team</h2>
+    <p class="section__sub">The people behind the project</p>
+  </header>
+
+  <div class="team-grid">
+
+    <!-- Dirk -->
+    <article class="person card">
+      <div class="avatar-ring">
+        <img src="{{ url_for('static', filename='images/cat.jpg') }}" alt="Dirk Nash Orimaco">
+      </div>
+      <h3>Dirk Nash Orimaco</h3>
+      <p class="role">4th Year Computer Engineering <br> <i>Cyber-Physical Systems</i></p>
+      <div class="social">
+        <a href="https://www.facebook.com/dnforimacooo" target="_blank" class="icon fb" aria-label="Facebook"></a>
+        <a href="mailto:qdnforimaco@tip.edu.ph" class="icon gmail" aria-label="Gmail"></a>
+        <a href="https://www.linkedin.com/in/dirk-nash-orimaco-611752249/" target="_blank" class="icon li" aria-label="LinkedIn"></a>
+      </div>
+    </article>
+
+    <!-- Johnlloyd -->
+    <article class="person card">
+      <div class="avatar-ring">
+        <img src="{{ url_for('static', filename='images/cat1.jpg') }}" alt="Johnlloyd Padrigano">
+      </div>
+      <h3>Johnlloyd Padrigano</h3>
+      <p class="role">4th Year Computer Engineering <br> <i>Data Science</i></p>
+      <div class="social">
+        <a href="https://www.facebook.com/johnlloyd.padrigano.3#" target="_blank" class="icon fb" aria-label="Facebook"></a>
+        <a href="mailto:qjlpadrigano@tip.edu.ph" class="icon gmail" aria-label="Gmail"></a>
+        <a href="https://linkedin.com/" target="_blank" class="icon li" aria-label="LinkedIn"></a>
+      </div>
+    </article>
+
+    <!-- Jerico -->
+    <article class="person card">
+      <div class="avatar-ring">
+        <img src="{{ url_for('static', filename='images/cat2.jpg') }}" alt="Jerico James Escosia">
+      </div>
+      <h3>Jerico James Escosia</h3>
+      <p class="role">4th Year Computer Engineering <br> <i>System Administration</i></p>
+      <div class="social">
+        <a href="https://www.facebook.com/100006189037796/" target="_blank" class="icon fb" aria-label="Facebook"></a>
+        <a href="mailto:qjjiescosia@tip.edu.ph" class="icon gmail" aria-label="Gmail"></a>
+        <a href="https://www.linkedin.com/in/jerico-escosia-91822227a/" target="_blank" class="icon li" aria-label="LinkedIn"></a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+{% endblock %}
