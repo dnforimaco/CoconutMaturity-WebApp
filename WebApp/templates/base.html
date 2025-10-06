@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>CocoCheck</title>
     <!-- <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon"> -->
-    <link rel="icon" href="{{ url_for('static', filename='images/cat.jpg') }}" type="image/jpg">
+    <link rel="icon" href="{{ url_for('static', filename='images/cococheck.png') }}" type="image/jpg">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -12,10 +12,14 @@
     <header>
         <nav class="navbar">
             <div class="nav-left">
-            <div class="brand">
-                <span class="brand-title">CocoCheck</span>
-                <span class="brand-sub">Coconut Maturity Detection</span>
-            </div>
+            <a href="{{ url_for('home') }}" class="brand-link">
+                <div class="brand">
+                    <div class="brand-header">
+                        <span class="brand-title">CocoCheck</span>
+                    </div>
+                    <span class="brand-sub">Coconut Maturity Detection</span>
+                </div>
+            </a>
             </div>
             <div class="nav-right">
             <a href="{{ url_for('home') }}">Home</a>
@@ -31,15 +35,27 @@
     </main>
 
     <!-- Footer -->
-    <footer>
-        <div class="contact">
-        <p>Contact Us:</p>
-        <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="icon fb"></a>
-        <a href="mailto:dirknashorimaco1@gmail.com" target="_blank" aria-label="Gmail" class="icon gmail"></a>
-        <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="icon ig"></a>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <div class="footer-brand">
+                    <h3 class="footer-title">CocoCheck</h3>
+                    <p class="footer-subtitle">Coconut Maturity Detection</p>
+                </div>
+            </div>
+            <div class="footer-right">
+                <div class="contact">
+                    <p class="contact-label">Contact Us:</p>
+                    <div class="contact-icons">
+                        <a href="https://facebook.com" target="_blank" aria-label="Facebook" class="icon fb"></a>
+                        <a href="mailto:dirknashorimaco1@gmail.com" target="_blank" aria-label="Gmail" class="icon gmail"></a>
+                        <a href="https://instagram.com" target="_blank" aria-label="Instagram" class="icon ig"></a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <hr>
-        <p>© 2025 Coconut Detection Project | All Rights Reserved</p>
+        <hr class="footer-divider">
+        <p class="footer-copyright">© 2025 Coconut Detection Project | All Rights Reserved</p>
     </footer>
 </body>
 </html>
