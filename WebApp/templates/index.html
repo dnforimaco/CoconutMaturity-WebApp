@@ -6,69 +6,278 @@
 
     <!-- Slides -->
     <div class="slides">
-      <article class="slide active" style="background-image:url({{ url_for('static', filename='images/coconut1.jpeg') }})">
+      <article class="slide active" style="background-image: url('{{ url_for('static', filename='images/slide1.jpg') }}');">
         <div class="slide__overlay"></div>
         <div class="slide__content">
-          <span class="eyebrow">DESIGN</span>
-          <h1><b>Slider 01</b></h1>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore, neque? Lorem ipsum dolor sit amet.</p>
+          <span class="eyebrow">REVOLUTIONIZING</span>
+          <h1><b>Coconut Farming</b></h1>
+          <p><br>Discover how technology is transforming coconut farming! Our web app uses advanced image detection to accurately identify the maturity level of coconuts — from young to overmature. With just a single upload, farmers and producers can ensure better harvesting decisions, reduce waste, and improve product quality.</p>
+          <div class="slide__actions">
+            <a href="{{ url_for('detect_page') }}" class="btn-slide btn-slide--primary">Get Started</a>
+          </div>
         </div>
       </article>
 
-      <article class="slide" style="background-image:url({{ url_for('static', filename='images/coconutfarming.jpg') }})">
+      <article class="slide" style="background-image: url('{{ url_for('static', filename='images/coconut1.jpeg') }}');">
         <div class="slide__overlay"></div>
         <div class="slide__content">
-          <span class="eyebrow">TECH</span>
-          <h1><b>Slider 02</b></h1>
-          <p>Quasi, cumque! Cupiditate, perspiciatis. Tempora illum fuga repellat porro earum veniam.</p>
+          <span class="eyebrow">UNDERSTANDING</span>
+          <h1><b>Coconut Maturity Stages</b></h1>
+          <p><br>Coconuts go through different stages — from tender green coconuts for juice to mature brown coconuts for oil extraction. Recognizing each stage accurately helps farmers optimize harvest time and ensures high-quality products for various uses.</p>
+          <div class="slide__actions">
+            <a href="{{ url_for('detect_page') }}" class="btn-slide btn-slide--primary">Get Started</a>
+          </div>
         </div>
       </article>
 
-      <article class="slide" style="background-image:url({{ url_for('static', filename='images/cat2.jpg') }})">
+      <article class="slide" style="background-image: url('{{ url_for('static', filename='images/coconutfarming2.jpg') }}');">
         <div class="slide__overlay"></div>
         <div class="slide__content">
-          <span class="eyebrow">NATURE</span>
-          <h1><b>Slider 03</b></h1>
-          <p>Aspernatur unde ratione, consequuntur minus dicta aliquid veritatis maxime ullam.</p>
+          <span class="eyebrow">CHALLENGES OF</span>
+          <h1><b>Misjudging Maturity</b></h1>
+          <p><br>Many farmers still rely on visual judgment to determine when coconuts are ready for harvest — a process that often leads to errors. Harvesting too early can result in lower oil yield and poor coconut meat quality, while harvesting too late reduces water content and overall freshness.</p>
+          <div class="slide__actions">
+            <a href="{{ url_for('detect_page') }}" class="btn-slide btn-slide--primary">Get Started</a>
+          </div>
         </div>
       </article>
 
-      <article class="slide" style="background-image:url({{ url_for('static', filename='images/team.jpg') }})">
+      <article class="slide" style="background-image: url('{{ url_for('static', filename='images/coconutfarming.jpg') }}');">
         <div class="slide__overlay"></div>
         <div class="slide__content">
-          <span class="eyebrow">INSIGHT</span>
-          <h1><b>Slider 04</b></h1>
-          <p>Dolor sit amet consectetur, adipisicing elit. Quam voluptatum repellat eligendi.</p>
+          <span class="eyebrow">EMPOWERING FARMERS</span>
+          <h1><b>Promoting Sustainability</b></h1>
+          <p><br>This innovation aims to empower local farmers by providing accessible tools for quality assessment. With AI-driven insights, coconut farming becomes more sustainable — minimizing waste, maximizing yield, and supporting eco-friendly agriculture.</p>
+          <div class="slide__actions">
+            <a href="{{ url_for('detect_page') }}" class="btn-slide btn-slide--primary">Get Started</a>
+          </div>
         </div>
       </article>
     </div>
 
     <!-- Arrows -->
     <div class="nav">
-      <button class="nav-btn prev" aria-label="Previous slide">&lt;</button>
-      <button class="nav-btn next" aria-label="Next slide">&gt;</button>
+      <button class="nav-btn prev" aria-label="Previous slide"><</button>
+      <button class="nav-btn next" aria-label="Next slide">></button>
     </div>
 
     <!-- Thumbnails -->
     <div class="thumbs">
       <button class="thumb active" data-index="0">
-        <img src="{{ url_for('static', filename='images/coconut1.jpeg') }}" alt="Slide 01">
-        <span>Name Slider</span>
+        <img src="{{ url_for('static', filename='images/slide1.jpg') }}" alt="Slide 01">
+        <span>Smart Coconut Detection</span>
       </button>
       <button class="thumb" data-index="1">
-        <img src="{{ url_for('static', filename='images/coconutfarming.jpg') }}" alt="Slide 02">
-        <span>Name Slider</span>
+        <img src="{{ url_for('static', filename='images/coconut1.jpeg') }}" alt="Slide 02">
+        <span>Maturity Stages</span>
       </button>
       <button class="thumb" data-index="2">
-        <img src="{{ url_for('static', filename='images/cat2.jpg') }}" alt="Slide 03">
-        <span>Name Slider</span>
+        <img src="{{ url_for('static', filename='images/coconutfarming2.jpg') }}" alt="Slide 03">
+        <span>Harvesting Challenges</span>
       </button>
       <button class="thumb" data-index="3">
-        <img src="{{ url_for('static', filename='images/team.jpg') }}" alt="Slide 04">
-        <span>Name Slider</span>
+        <img src="{{ url_for('static', filename='images/coconutfarming.jpg') }}" alt="Slide 04">
+        <span>Farming Innovation</span>
       </button>
     </div>
 
+  </div>
+</section>
+
+<!-- Articles Section -->
+<section id="articles-section" class="articles-section">
+  <div class="container">
+    <header class="section__head">
+      <div class="section__icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36"><path fill="#8b5e3c" d="M5.506 30.167c-7.03-7.029-6.397-19.059 1.414-26.87l25.456 25.456c-7.811 7.811-19.841 8.443-26.87 1.414"/><path fill="#603913" d="M6.92 3.297c-3.905 3.905-1.373 12.77 5.656 19.8c7.031 7.029 15.895 9.561 19.799 5.656c3.905-3.904 1.374-12.769-5.657-19.799C19.69 1.924 10.825-.607 6.92 3.297"/><path fill="#f5f8fa" d="M31.591 24.217a1 1 0 0 0 1.677-.469c.067-.269 1.575-6.67-3.013-11.258c-1.12-1.12-2.783-3.774-3.256-4.544c-.4-.415-.733-.27-1.498-1.035c-.35-.35-1.405-2.248-4.439.629a.99.99 0 0 0-.116 1.275l10.528 15.263q.054.076.117.139"/><path fill="#603913" d="M24.271 7.562c.707.707 1.458 1.417 1.458 1.417s2.404 2.804 3.819 4.218c4.242 4.243 2.75 10.313 2.75 10.313L20.646 7.833s2.792-1.042 3.625-.271m1.271-1.354c-1.833-1.438-4.777-.315-5.5.396c-.683.683-.467 1.984.081 2.778l10.528 15.263q.105.151.232.278a1.999 1.999 0 0 0 3.356-.936c.072-.293 1.705-7.223-3.277-12.205c-.892-.892-1.938-1.738-2.909-2.913a29 29 0 0 0-2.074-2.328z"/><path fill="#f5f8fa" d="M8.334 4.711c-3.124 3.124-.592 10.722 5.657 16.97c6.247 6.248 13.846 8.781 16.97 5.657s.591-10.723-5.657-16.971s-13.846-8.78-16.97-5.656"/><path fill="#99aab5" d="M10.411 6.877c-2.318 2.318-.083 8.314 4.994 13.391c5.078 5.078 11.072 7.312 13.391 4.994c2.318-2.318.083-8.313-4.994-13.391c-5.076-5.078-11.072-7.313-13.391-4.994"/><path fill="#99aab5" d="m20.199 9.939l1.176-.335c.562-.312 1.354-.333 1.896.167l1.211 1.273c.573.69 1.919 2.137 2.995 3.213c3.807 3.807 2.319 8.722 2.253 8.93a.5.5 0 0 1-.888.135l-8.797-12.669a.5.5 0 0 1 .154-.714"/><path fill="#f5f8fa" d="M23.76 26.056s-3.209-2.085-3.771-3.771c-.628-1.885-4.662-2.252-5.29-4.138c-.627-1.885-1.676-4.765-2.253-5.918c-.576-1.153-1.258-.001-1.886-1.886c-.628-1.887-1.885-3.144-1.885-3.144s0 8.801 1.885 10.686c1.886 1.886 9.429 9.429 10.058 8.799c.628-.628 3.142-.628 3.142-.628"/><path fill="#603913" d="M22.838 27.73s-3.73-2.537-4.316-4.294c-.655-1.964-5.29-2.619-5.944-4.583c-.655-1.964-1.596-5.486-1.913-5.892c-.916-1.18-1.309-.001-1.964-1.964c-.655-1.965-1.964-3.274-1.964-3.274s0 9.166 1.964 11.13s9.82 9.821 10.476 9.166c.655-.654 3.661-.289 3.661-.289"/><path fill="#8b5e3c" d="M21.769 29.46s-3.61-2.345-4.242-4.242c-.707-2.121-6.365-3.536-7.072-5.657s-.707-4.95-1.414-5.657c-.707-.708-1.414 0-2.121-2.122S4.799 8.247 4.799 8.247s0 9.9 2.121 12.021s10.606 10.606 11.313 9.899s3.536-.707 3.536-.707"/><path fill="#a97c50" d="M10.811 32.853c.091-.285.836-.061 1.113.001c6.934 1.526 11.66-1.385 11.712-1.409c.272-.136.579-.034.685.224s-.026.577-.296.712c-.225.112-4.808 2.55-12.125.939c-.091-.021-.721-.131-.781-.191c-.123-.123-.37-.084-.308-.276m-8.364-9.968c.115.114.108.212.29.165c.288-.073.299-.517.255-.798c-.492-3.192.36-6.504 1.841-10.352c.107-.281-.027-.575-.294-.652c-.272-.08-.579.084-.687.364c-1.555 4.034-2.057 7.636-1.536 11.013a.5.5 0 0 0 .131.26m10.357 9.178a.47.47 0 0 0 .279.132c3.769.426 6.893-1.137 7.024-1.204c.269-.137.4-.456.291-.714c-.108-.259-.417-.356-.688-.218c-.029.015-2.743 1.843-6.181 1.453c-.285-.032-.826-.016-.889.275c-.036.177.053.166.164.276"/></svg>
+      </div>
+      <h2>Understanding Coconut Farming</h2>
+      <p class="section__sub">Discover the science behind coconut cultivation and maturity detection</p>
+      <div class="section__divider"></div>
+    </header>
+
+    <div class="articles-grid">
+      <article class="article-card card">
+        <div class="article-image">
+          <img src="{{ url_for('static', filename='images/box1.jpg') }}" alt="Coconut Maturity Stages">
+          <div class="article-badge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <span>Essential Guide</span>
+          </div>
+        </div>
+        <div class="article-content">
+          <div class="article-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="#329535">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+          </div>
+          <h3>Coconut Maturity Stages</h3>
+          <p>Coconuts progress through distinct maturity stages, each with unique characteristics and chemical compositions. Understanding these phases is crucial for optimal harvesting, processing, and maximizing the value of each coconut.</p>
+          <div class="article-features">
+            <div class="feature-item">
+              <span class="feature-dot"></span>
+              <span>Premature Stage (6–8 months)</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-dot"></span>
+              <span>Mature Stage (10–12 months)</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-dot"></span>
+              <span>Overmature Stage (12 months and beyond)</span>
+            </div>
+          </div>
+          <a href="https://hatchgrove.com/different-stages-of-coconut/" target="_blank" class="article-link">
+            <span>Read More</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M5 12h14m-7-7l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <article class="article-card card">
+        <div class="article-image">
+          <img src="{{ url_for('static', filename='images/box2.jpg') }}" alt="Harvesting Challenges">
+          <div class="article-badge badge-challenge">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <span>Challenges & Solutions</span>
+          </div>
+        </div>
+        <div class="article-content">
+          <div class="article-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="#ff6b35">
+              <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+            </svg>
+          </div>
+          <h3>Farmers' Harvesting Challenges</h3>
+          <p>Traditional harvesting methods present numerous challenges that affect yield quality and farmer income. Our AI-powered solution addresses these issues by providing precise, objective maturity assessments.</p>
+          <div class="article-features">
+            <div class="feature-item">
+              <span class="feature-dot warning"></span>
+              <span>Visual inspection errors</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-dot warning"></span>
+              <span>Inconsistent quality assessment</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-dot success"></span>
+              <span>AI-powered accuracy</span>
+            </div>
+          </div>
+          <a href="https://uijrt.com/articles/v6/i8/UIJRTV6I80003.pdf" target="_blank" class="article-link">
+            <span>Read More</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M5 12h14m-7-7l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <article class="article-card card sustainability-card">
+        <div class="article-image">
+          <img src="{{ url_for('static', filename='images/coconutfarming.jpg') }}" alt="Sustainable Farming Practices">
+          <div class="article-badge badge-sustainable">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <span>Sustainability Focus</span>
+          </div>
+        </div>
+        <div class="article-content">
+          <div class="article-icon sustainability-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#4f4949" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.5 19a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5M10 5l2-2m-4.5 7a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5m.5 6l8-8M5.5 21a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5m13-13a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5M12 21l2-2"/></svg>
+          </div>
+          <h3>Sustainable Farming Practices</h3>
+          <p>Modern coconut farming embraces sustainability through technology integration. By optimizing harvest times and reducing waste, farmers can improve their yield while maintaining environmental responsibility.</p>
+          <div class="article-features">
+            <div class="feature-item">
+              <span class="feature-dot success"></span>
+              <span>Reduce food waste by 30%</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-dot success"></span>
+              <span>Optimize resource usage</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-dot success"></span>
+              <span>Increase farmer income</span>
+            </div>
+          </div>
+          <a href="https://pca.gov.ph/index.php/trade-market/price-watch-2022/2-uncategorised/196-cocotech" target="_blank" class="article-link">
+            <span>Read More</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M5 12h14m-7-7l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </article>
+
+      <article class="article-card card hardware-card">
+        <div class="article-image">
+          <img src="{{ url_for('static', filename='images/box4.png') }}" alt="Hardware Prototype Coming Soon">
+          <div class="article-badge badge-coming-soon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <span>Coming Soon</span>
+          </div>
+        </div>
+        <div class="article-content">
+          <div class="article-icon hardware-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><defs><mask id="SVGq3aKMctS"><g fill="none" stroke="#fff" stroke-width="4"><path fill="#555555" stroke-linecap="round" stroke-linejoin="round" d="M5 35a2 2 0 0 1 2-2h34a2 2 0 0 1 2 2v7H5z"/><path stroke-linecap="round" stroke-linejoin="round" d="M42 18h-8l-6-6l6-6h8"/><circle cx="8" cy="12" r="4" fill="#555555"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 12h16m-18 4l8 17"/></g></mask></defs><path fill="#4f4949" d="M0 0h48v48H0z" mask="url(#SVGq3aKMctS)"/></svg>
+          </div>
+          <h3>Hardware Prototype</h3>
+          <p>Revolutionizing coconut maturity detection with portable hardware technology. Our upcoming device will bring laboratory-grade accuracy directly to coconut farms, making precision agriculture accessible to all farmers.</p>
+          <div class="article-features">
+            <div class="feature-item">
+              <span class="feature-dot upcoming"></span>
+              <span>Portable detection device</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-dot upcoming"></span>
+              <span>Real-time results</span>
+            </div>
+            <div class="feature-item">
+              <span class="feature-dot upcoming"></span>
+              <span>Field-ready technology</span>
+            </div>
+          </div>
+          <div class="coming-soon-notice">
+            <span class="notice-badge">Expected Release: Q1 2026</span>
+            <span class="notice-text">Stay tuned for updates!</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Call to Action Section -->
+    <div class="articles-cta">
+      <div class="cta-content">
+        <h3>Ready to Transform Your Coconut Farming?</h3>
+        <p>Join thousands of farmers who are already using AI-powered technology to improve their harvest quality and increase their income.</p>
+        <div class="cta-actions">
+          <a href="{{ url_for('detect_page') }}" class="btn-cta btn-cta-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+            </svg>
+            Try Detection Tool
+          </a>
+          <a href="{{ url_for('about_page') }}" class="btn-cta btn-cta-secondary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            Learn More About Us
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -139,6 +348,7 @@
     if (Math.abs(dx) > 40) { dx < 0 ? setActive(i+1) : setActive(i-1); }
   });
 
+  
   play(); // kick things off
 })();
 </script>

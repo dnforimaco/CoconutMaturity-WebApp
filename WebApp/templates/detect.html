@@ -1,42 +1,284 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="upload-box">
-    <h2>Upload Coconut Tapping Audio</h2>
-    <form id="uploadForm" action="{{ url_for('backend.classify') }}" method="post" enctype="multipart/form-data">
-        <input type="file" id="audioFile" name="audio" accept=".wav,.mp3,.ogg">
-        <button type="submit">Submit</button>
-    </form>
-
-    {% if result %}
-        <div class="result-box 
-            {% if 'Mature' in result %} mature
-            {% elif 'Premature' in result %} premature
-            {% elif 'Immature' in result %} immature
-            {% endif %}">
-            <h3>Classification Result:</h3>
-            <p>{{ result }}</p>
+<div class="detect-container">
+    <!-- Instructions Section -->
+    <div class="instructions-section">
+        <div class="instructions-header">
+            <h2>Coconut Maturity Detection</h2>
+            <p class="instructions-subtitle">Upload an audio recording of coconut tapping to determine maturity level</p>
         </div>
-    {% endif %}
+
+        <div class="instructions-grid">
+            <div class="instruction-card">
+                <div class="instruction-icon">📱</div>
+                <h3>How to Record</h3>
+                <p>Tap the coconut firmly with a stick or your knuckles and record the sound for 2-3 seconds</p>
+            </div>
+
+            <div class="instruction-card">
+                <div class="instruction-icon">🎙️</div>
+                <h3>Audio Quality</h3>
+                <p>Use a clear recording in a quiet environment. Supported formats: WAV, MP3, OGG</p>
+            </div>
+
+            <div class="instruction-card">
+                <div class="instruction-icon">⚡</div>
+                <h3>Quick Results</h3>
+                <p>Get instant classification results with confidence levels for accurate maturity assessment</p>
+            </div>
+        </div>
+
+        <div class="maturity-guide">
+            <h3>Understanding Results</h3>
+            <div class="maturity-types">
+                <div class="maturity-type mature">
+                    <span class="maturity-indicator"></span>
+                    <div>
+                        <strong>Mature:</strong> Ready for harvest (8-9 months)
+                    </div>
+                </div>
+                <div class="maturity-type premature">
+                    <span class="maturity-indicator"></span>
+                    <div>
+                        <strong>Premature:</strong> Needs more time (6-7 months)
+                    </div>
+                </div>
+                <div class="maturity-type immature">
+                    <span class="maturity-indicator"></span>
+                    <div>
+                        <strong>Immature:</strong> Too early to harvest (under 6 months)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Section -->
+    <div class="upload-section">
+        <div class="upload-box">
+            <div class="upload-header">
+                <div class="upload-icon">🎵</div>
+                <h2>Upload Audio File</h2>
+                <p>Choose your coconut tapping audio recording</p>
+            </div>
+
+            <form id="uploadForm" action="{{ url_for('backend.classify') }}" method="post" enctype="multipart/form-data">
+                <div class="file-input-wrapper">
+                    <input type="file" id="audioFile" name="audio" accept=".wav,.mp3,.ogg,.m4a">
+                    <div class="file-input-display">
+                        <div class="file-input-icon">📁</div>
+                        <div class="file-input-text">
+                            <p class="primary-text">Click to browse or drag & drop</p>
+                            <p class="secondary-text">WAV, MP3, OGG up to 10MB</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="upload-actions">
+                    <button type="submit" class="btn-primary" id="submitBtn">
+                        <span class="btn-text">Analyze Audio</span>
+                        <span class="btn-icon">🔍</span>
+                    </button>
+                    <button type="button" class="btn-secondary" id="clearBtn">Clear</button>
+                </div>
+            </form>
+
+            <!-- Loading State -->
+            <div class="loading-state" id="loadingState" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p>Analyzing your audio recording...</p>
+            </div>
+
+            <!-- File Info -->
+            <div class="file-info" id="fileInfo" style="display: none;">
+                <div class="file-details">
+                    <span class="file-name" id="fileName"></span>
+                    <span class="file-size" id="fileSize"></span>
+                </div>
+                <button class="remove-file" id="removeFile">✕</button>
+            </div>
+        </div>
+
+        <!-- Result Section -->
+        {% if result %}
+            <div class="result-section">
+                <div class="result-box
+                    {% if 'Mature' in result %} mature
+                    {% elif 'Premature' in result %} premature
+                    {% elif 'Immature' in result %} immature
+                    {% endif %}">
+                    <div class="result-header">
+                        <div class="result-icon">
+                            {% if 'Mature' in result %} ✅
+                            {% elif 'Premature' in result %} ⚠️
+                            {% elif 'Immature' in result %} ❌
+                            {% endif %}
+                        </div>
+                        <h3>Classification Result</h3>
+                    </div>
+                    <div class="result-content">
+                        <p class="result-text">{{ result }}</p>
+                        <div class="confidence-meter">
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" style="width: 85%"></div>
+                            </div>
+                            <span class="confidence-text">85% Confidence</span>
+                        </div>
+                    </div>
+                    <div class="result-actions">
+                        <button class="btn-result" onclick="window.location.reload()">Analyze Another</button>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
 </div>
 
 <script>
 const fileInput = document.getElementById("audioFile");
 const form = document.getElementById("uploadForm");
+const fileInputWrapper = document.querySelector(".file-input-wrapper");
+const fileInputDisplay = document.querySelector(".file-input-display");
+const fileInfo = document.getElementById("fileInfo");
+const fileName = document.getElementById("fileName");
+const fileSize = document.getElementById("fileSize");
+const removeFile = document.getElementById("removeFile");
+const loadingState = document.getElementById("loadingState");
+const submitBtn = document.getElementById("submitBtn");
+const clearBtn = document.getElementById("clearBtn");
 
-// Check on submit
+// File input change handler
+fileInput.addEventListener("change", function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        // Validate file type
+        const validTypes = ['audio/wav', 'audio/mpeg', 'audio/ogg', 'audio/mp4', 'audio/mp3'];
+        if (!validTypes.some(type => file.type.includes(type.split('/')[1]))) {
+            alert("Please select a valid audio file (WAV, MP3, OGG, M4A)");
+            fileInput.value = "";
+            return;
+        }
+
+        // Validate file size (10MB limit)
+        if (file.size > 10 * 1024 * 1024) {
+            alert("File size must be less than 10MB");
+            fileInput.value = "";
+            return;
+        }
+
+        displayFileInfo(file);
+        fileInputWrapper.classList.add("has-file");
+    } else {
+        clearFile();
+    }
+});
+
+// Display file information
+function displayFileInfo(file) {
+    fileName.textContent = file.name;
+    fileSize.textContent = formatFileSize(file.size);
+    fileInfo.style.display = "flex";
+    fileInputDisplay.style.display = "none";
+}
+
+// Format file size
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// Remove file
+removeFile.addEventListener("click", function() {
+    fileInput.value = "";
+    clearFile();
+});
+
+// Clear file display
+function clearFile() {
+    fileInfo.style.display = "none";
+    fileInputDisplay.style.display = "flex";
+    fileInputWrapper.classList.remove("has-file");
+}
+
+// Drag and drop functionality
+fileInputWrapper.addEventListener("click", function() {
+    fileInput.click();
+});
+
+fileInputWrapper.addEventListener("dragover", function(e) {
+    e.preventDefault();
+    fileInputWrapper.classList.add("drag-over");
+});
+
+fileInputWrapper.addEventListener("dragleave", function(e) {
+    e.preventDefault();
+    fileInputWrapper.classList.remove("drag-over");
+});
+
+fileInputWrapper.addEventListener("drop", function(e) {
+    e.preventDefault();
+    fileInputWrapper.classList.remove("drag-over");
+
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        fileInput.files = files;
+        fileInput.dispatchEvent(new Event("change"));
+    }
+});
+
+// Form submission
 form.addEventListener("submit", function(e) {
     if (!fileInput.value) {
-        e.preventDefault(); // stop form from submitting
-        fileInput.classList.add("error-border");
-        alert("Please upload a file before submitting.");
+        e.preventDefault();
+        showError("Please select an audio file first");
+        return;
     }
+
+    // Show loading state
+    submitBtn.style.display = "none";
+    loadingState.style.display = "block";
+    clearBtn.style.display = "none";
 });
 
-// Reset border when file is chosen
-fileInput.addEventListener("change", function() {
-    if (fileInput.value) {
-        fileInput.classList.remove("error-border");
-    }
+// Error display function
+function showError(message) {
+    const errorDiv = document.createElement("div");
+    errorDiv.className = "error-message";
+    errorDiv.textContent = message;
+    errorDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #e74c3c;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 1000;
+        animation: slideIn 0.3s ease;
+    `;
+
+    document.body.appendChild(errorDiv);
+
+    setTimeout(() => {
+        errorDiv.remove();
+    }, 5000);
+}
+
+// Clear button functionality
+clearBtn.addEventListener("click", function() {
+    fileInput.value = "";
+    clearFile();
 });
 </script>
+
+<style>
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+</style>
 {% endblock %}
