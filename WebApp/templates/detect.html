@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 {% block content %}
 <div class="detect-container">
@@ -31,22 +32,22 @@
         <div class="maturity-guide">
             <h3>Understanding Results</h3>
             <div class="maturity-types">
-                <div class="maturity-type mature">
-                    <span class="maturity-indicator"></span>
-                    <div>
-                        <strong>Mature:</strong> Ready for harvest (8-9 months)
-                    </div>
-                </div>
                 <div class="maturity-type premature">
                     <span class="maturity-indicator"></span>
                     <div>
-                        <strong>Premature:</strong> Needs more time (6-7 months)
+                        <strong>Premature::</strong> Needs more time (≈ 6–9 months)
                     </div>
                 </div>
-                <div class="maturity-type immature">
+                <div class="maturity-type mature">
                     <span class="maturity-indicator"></span>
                     <div>
-                        <strong>Immature:</strong> Too early to harvest (under 6 months)
+                        <strong>Mature:</strong> Ready for harvest (≈ 10–12 months)
+                    </div>
+                </div>
+                <div class="maturity-type overmature">
+                    <span class="maturity-indicator"></span>
+                    <div>
+                        <strong>Overmature:</strong> Harvested late; quality declines (12+ months)
                     </div>
                 </div>
             </div>
@@ -101,7 +102,7 @@
 
         <!-- Result Section -->
         {% if result %}
-            <div class="result-section">
+            <div class="result-section" id="resultSection">
                 <div class="result-box
                     {% if 'Mature' in result %} mature
                     {% elif 'Premature' in result %} premature
@@ -126,7 +127,7 @@
                         </div>
                     </div>
                     <div class="result-actions">
-                        <button class="btn-result" onclick="window.location.reload()">Analyze Another</button>
+                        <button class="btn-result" onclick="scrollToUpload()">Analyze Another</button>
                     </div>
                 </div>
             </div>
@@ -171,6 +172,11 @@ fileInput.addEventListener("change", function(e) {
     } else {
         clearFile();
     }
+});
+
+// Prevent double-click issue by stopping event propagation
+fileInput.addEventListener("click", function(e) {
+    e.stopPropagation();
 });
 
 // Display file information
@@ -273,6 +279,30 @@ clearBtn.addEventListener("click", function() {
     fileInput.value = "";
     clearFile();
 });
+
+// Scroll to results section when page loads with results
+document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function() {
+        const resultSection = document.getElementById("resultSection");
+        if (resultSection) {
+            resultSection.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }
+    }, 100);
+});
+
+// Scroll to upload section
+function scrollToUpload() {
+    const uploadSection = document.querySelector(".upload-section");
+    if (uploadSection) {
+        uploadSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+}
 </script>
 
 <style>
