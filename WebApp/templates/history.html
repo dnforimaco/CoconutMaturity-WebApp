@@ -24,7 +24,7 @@
             </div>
             <button class="btn btn--secondary" id="clearAllBtn">
                 <span class="btn-text">Clear All</span>
-                <span class="btn-icon">🗑️</span>
+                <span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="#5e5c5c" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="24" stroke-dashoffset="24" d="M12 20h5c0.5 0 1 -0.5 1 -1v-14M12 20h-5c-0.5 0 -1 -0.5 -1 -1v-14"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.52s" values="24;0"/></path><path stroke-dasharray="20" stroke-dashoffset="20" d="M4 5h16"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.52s" dur="0.26s" values="20;0"/></path><path stroke-dasharray="8" stroke-dashoffset="8" d="M10 4h4M10 9v7M14 9v7"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.78s" dur="0.26s" values="8;0"/></path></g></svg></span>
             </button>
         </div>
     </div>
@@ -308,7 +308,7 @@ function createHistoryItem(item) {
         <div class="history-item" data-id="${item.id}">
             <div class="history-item-main">
                 <div class="history-filename">
-                    <div class="file-icon">🎵</div>
+                    <div class="file-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#7c7a7a" d="M10.75 18.692q.816 0 1.379-.563q.563-.564.563-1.379v-3.98h2.731v-1.54h-3.5v4.087q-.236-.257-.53-.383q-.293-.126-.643-.126q-.815 0-1.379.563q-.563.564-.563 1.379t.563 1.379q.564.563 1.379.563M6.616 21q-.691 0-1.153-.462T5 19.385V4.615q0-.69.463-1.152T6.616 3H14.5L19 7.5v11.885q0 .69-.462 1.153T17.384 21zM14 8h4l-4-4z"/></svg></div>
                     <div class="filename-text">
                         <div class="filename">${item.filename}</div>
                         <div class="filesize">Audio File</div>
@@ -336,7 +336,7 @@ function createHistoryItem(item) {
 
                 <div class="history-item-actions">
                     <button class="btn btn--secondary btn-small btn-delete-item" data-id="${item.id}">
-                        <span class="btn-icon">🗑️</span>
+                        <span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="#5e5c5c" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 20h5c0.5 0 1 -0.5 1 -1v-14M12 20h-5c-0.5 0 -1 -0.5 -1 -1v-14"/><path d="M4 5h16"/><path d="M10 4h4M10 9v7M14 9v7"/></g></svg></span>
                     </button>
                 </div>
             </div>
@@ -420,6 +420,7 @@ async function clearAllHistory() {
 function clearAllFilters() {
     searchInput.value = '';
     filterDropdown.value = 'all';
+    filterDropdown.style.color = '#888'; // Reset color to gray when clearing filters
     applyFilters();
 }
 
@@ -461,6 +462,13 @@ searchInput.addEventListener("input", function(e) {
 
 // Filter dropdown event listener
 filterDropdown.addEventListener("change", function(e) {
+    // Change dropdown text color based on selection
+    if (e.target.value === 'all') {
+        e.target.style.color = '#888'; // Same color as search placeholder
+    } else {
+        e.target.style.color = '#000'; // Black color for maturity levels
+    }
+
     applyFilters();
 });
 
@@ -612,6 +620,7 @@ document.addEventListener("keydown", function(e) {
     box-shadow:
         0 4px 16px rgba(50, 149, 53, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    color: #888; /* Default color same as search placeholder */
 }
 
 .filter-dropdown:focus {
@@ -788,6 +797,31 @@ document.addEventListener("keydown", function(e) {
     font-size: 12px;
     min-width: 36px;
     height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+/* Hover effect for delete buttons */
+.btn-delete-item:hover .btn-icon svg path {
+    stroke: #e74c3c !important;
+}
+
+/* Hover effect for clear all button */
+#clearAllBtn:hover .btn-icon svg path {
+    stroke: #e74c3c !important;
+}
+
+/* Hover effect for file icons in history items */
+.history-item:hover .file-icon svg path {
+    fill: #329535 !important;
 }
 
 .btn-delete-confirm {
