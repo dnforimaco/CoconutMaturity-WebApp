@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 html {
   scroll-behavior: smooth;
@@ -29,7 +30,7 @@ html, body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #329535;  /* green header */
+    background: linear-gradient(135deg, #2d5016 0%, #329535 25%, #2e8b57 50%, #228b22 75%, #1a3d0f 100%);
     padding: 17px 40px;
     position: fixed;
     top: 0;
@@ -523,6 +524,21 @@ main{
   border-color: #55fb0e;
   box-shadow: 0 8px 24px rgba(255,255,255,0.3);
   transform: translateY(-3px) scale(1.05);
+}
+
+.btn--secondary{
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  color: #2f353a;
+  border: 3px solid #565a5e;
+  text-shadow: none;
+}
+
+.btn--secondary:hover{
+  background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+  border-color: #adb5bd;
+  color: #495057;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 /* ---------- Mission & Vision ---------- */
@@ -1734,6 +1750,200 @@ main{
 
     .result-text {
         font-size: 18px;
+    }
+}
+
+/* Recent Analyses Section */
+.recent-analyses-section {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(50, 149, 53, 0.1);
+    margin-top: 32px;
+}
+
+.recent-analyses-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid rgba(50, 149, 53, 0.1);
+}
+
+.recent-analyses-header h3 {
+    font-size: 22px;
+    color: #046307;
+    margin: 0;
+    font-weight: 600;
+    font-family: "Poppins", sans-serif;
+}
+
+.recent-analyses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.analysis-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #f8fff8 0%, #f0f8f0 100%);
+    border-radius: 12px;
+    border: 2px solid rgba(50, 149, 53, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.analysis-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(50, 149, 53, 0.15);
+    border-color: rgba(50, 149, 53, 0.2);
+}
+
+.analysis-filename {
+    flex: 1;
+    font-weight: 600;
+    color: #046307;
+    font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.analysis-result {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    min-width: 100px;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.analysis-result.mature {
+    background: linear-gradient(135deg, #e8ffe8 0%, #deffde 100%);
+    color: #028c0a;
+    border: 2px solid rgba(2, 140, 10, 0.2);
+}
+
+.analysis-result.premature {
+    background: linear-gradient(135deg, #fff8e8 0%, #fff2d6 100%);
+    color: #f5a623;
+    border: 2px solid rgba(245, 166, 35, 0.2);
+}
+
+.analysis-result.immature {
+    background: linear-gradient(135deg, #ffe8e8 0%, #ffd6d6 100%);
+    color: #e74c3c;
+    border: 2px solid rgba(231, 76, 60, 0.2);
+}
+
+.analysis-confidence {
+    font-size: 13px;
+    color: #666;
+    font-weight: 500;
+    min-width: 80px;
+    text-align: center;
+}
+
+.analysis-time {
+    font-size: 12px;
+    color: #888;
+    min-width: 70px;
+    text-align: right;
+}
+
+.analysis-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.btn-analysis {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-delete {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #c0392b;
+    transform: scale(1.05);
+}
+
+.no-analyses {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+}
+
+.no-analyses p {
+    font-size: 16px;
+    margin: 0;
+    font-style: italic;
+}
+
+/* Responsive Design for Recent Analyses */
+@media (max-width: 768px) {
+    .recent-analyses-section {
+        padding: 24px;
+        margin-top: 24px;
+    }
+
+    .recent-analyses-header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: stretch;
+    }
+
+    .recent-analyses-header h3 {
+        text-align: center;
+    }
+
+    .analysis-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 20px;
+    }
+
+    .analysis-filename {
+        text-align: center;
+        white-space: normal;
+        overflow: visible;
+    }
+
+    .analysis-result {
+        margin: 0 auto;
+    }
+
+    .analysis-confidence {
+        text-align: center;
+    }
+
+    .analysis-time {
+        text-align: center;
+    }
+
+    .analysis-actions {
+        margin: 0 auto;
+        justify-content: center;
     }
 }
 
