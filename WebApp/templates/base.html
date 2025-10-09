@@ -24,6 +24,7 @@
             <div class="nav-right">
             <a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active{% endif %}">Home</a>
             <a href="{{ url_for('detect_page') }}" class="{% if request.endpoint == 'detect_page' or request.endpoint == 'backend.classify' or result is defined %}active{% endif %}">Detect</a>
+            <a href="{{ url_for('history_page') }}" class="{% if request.endpoint == 'history_page' %}active{% endif %}">History</a>
             <a href="{{ url_for('about_page') }}" class="{% if request.endpoint == 'about_page' %}active{% endif %}">About Us</a>
             </div>
         </nav>

@@ -35,7 +35,7 @@
                 <div class="maturity-type premature">
                     <span class="maturity-indicator"></span>
                     <div>
-                        <strong>Premature::</strong> Needs more time (≈ 6–9 months)
+                        <strong>Premature:</strong> Needs more time (≈ 6–9 months)
                     </div>
                 </div>
                 <div class="maturity-type mature">
@@ -58,16 +58,22 @@
     <div class="upload-section">
         <div class="upload-box">
             <div class="upload-header">
-                <div class="upload-icon">🎵</div>
+                <div class="upload-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 24 24">
+                        <path fill="#4f4949" d="M9 13V5c0-1.1.9-2 2-2h9c1.1 0 2 .9 2 2v6h-3.43l-1.28-1.74a.14.14 0 0 0-.24 0L15.06 12c-.06.06-.18.07-.24 0l-1.43-1.75a.152.152 0 0 0-.23 0l-2.11 2.66c-.08.09-.01.24.11.24h6.34V15H11c-1.11 0-2-.89-2-2m-3 9v-1H4v1H2V2h2v1h2V2h2.39C7.54 2.74 7 3.8 7 5v8c0 2.21 1.79 4 4 4h4.7c-1.03.83-1.7 2.08-1.7 3.5c0 .53.11 1.03.28 1.5zM4 7h2V5H4zm0 4h2V9H4zm0 4h2v-2H4zm2 4v-2H4v2zm17-6v2h-2v5.5a2.5 2.5 0 0 1-5 0a2.5 2.5 0 0 1 3.5-2.29V13z"/>
+                    </svg>
+                </div>
                 <h2>Upload Audio File</h2>
                 <p>Choose your coconut tapping audio recording</p>
             </div>
 
-            <form id="uploadForm" action="{{ url_for('backend.classify') }}" method="post" enctype="multipart/form-data">
+            <form id="uploadForm" enctype="multipart/form-data">
                 <div class="file-input-wrapper">
                     <input type="file" id="audioFile" name="audio" accept=".wav,.mp3,.ogg,.m4a">
                     <div class="file-input-display">
-                        <div class="file-input-icon">📁</div>
+                        <div class="file-input-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24"><g fill="none" stroke="#302f2f" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path fill="#302f2f" fill-opacity="0" stroke-dasharray="20" stroke-dashoffset="20" d="M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5"><animate attributeName="d" begin="0.5s" dur="1.5s" repeatCount="indefinite" values="M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5;M12 15h2v-3h2.5l-4.5 -4.5M12 15h-2v-3h-2.5l4.5 -4.5;M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5"/><animate fill="freeze" attributeName="fill-opacity" begin="0.7s" dur="0.5s" values="0;1"/><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="20;0"/></path><path stroke-dasharray="14" stroke-dashoffset="14" d="M6 19h12"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.5s" dur="0.2s" values="14;0"/></path></g></svg>
+                        </div>
                         <div class="file-input-text">
                             <p class="primary-text">Click to browse or drag & drop</p>
                             <p class="secondary-text">WAV, MP3, OGG up to 10MB</p>
@@ -76,11 +82,11 @@
                 </div>
 
                 <div class="upload-actions">
-                    <button type="submit" class="btn-primary" id="submitBtn">
+                    <button type="submit" class="btn btn--primary" id="submitBtn">
                         <span class="btn-text">Analyze Audio</span>
                         <span class="btn-icon">🔍</span>
                     </button>
-                    <button type="button" class="btn-secondary" id="clearBtn">Clear</button>
+                    <button type="button" class="btn btn--secondary" id="clearBtn">Clear</button>
                 </div>
             </form>
 
@@ -110,9 +116,9 @@
                     {% endif %}">
                     <div class="result-header">
                         <div class="result-icon">
-                            {% if 'Mature' in result %} ✅
-                            {% elif 'Premature' in result %} ⚠️
-                            {% elif 'Immature' in result %} ❌
+                            {% if 'Mature' in result %}
+                            {% elif 'Premature' in result %}
+                            {% elif 'Immature' in result %}
                             {% endif %}
                         </div>
                         <h3>Classification Result</h3>
@@ -127,11 +133,26 @@
                         </div>
                     </div>
                     <div class="result-actions">
-                        <button class="btn-result" onclick="scrollToUpload()">Analyze Another</button>
+                        <button class="btn btn--primary" onclick="scrollToUpload()">Analyze Another</button>
                     </div>
                 </div>
             </div>
         {% endif %}
+
+        <!-- Recent Analyses Section -->
+        <div class="recent-analyses-section">
+            <div class="recent-analyses-header">
+                <h3>Recent Analyses</h3>
+                <button class="btn btn--secondary" onclick="location.href='/history'">View All</button>
+            </div>
+
+            <div class="recent-analyses-list" id="recentAnalysesList">
+                <!-- Recent analyses will be populated here -->
+                <div class="no-analyses" id="noAnalyses">
+                    <p>No recent analyses yet. Upload an audio file to get started!</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -235,10 +256,11 @@ fileInputWrapper.addEventListener("drop", function(e) {
     }
 });
 
-// Form submission
-form.addEventListener("submit", function(e) {
+// Form submission with AJAX
+form.addEventListener("submit", async function(e) {
+    e.preventDefault(); // Prevent traditional form submission
+
     if (!fileInput.value) {
-        e.preventDefault();
         showError("Please select an audio file first");
         return;
     }
@@ -247,7 +269,162 @@ form.addEventListener("submit", function(e) {
     submitBtn.style.display = "none";
     loadingState.style.display = "block";
     clearBtn.style.display = "none";
+
+    try {
+        // Create FormData for file upload
+        const formData = new FormData();
+        formData.append('audio', fileInput.files[0]);
+
+        // Submit to server
+        const response = await fetch('{{ url_for("backend.classify") }}', {
+            method: 'POST',
+            body: formData
+        });
+
+        if (response.ok) {
+            const html = await response.text();
+
+            // Extract result from HTML response (simple approach)
+            // In a production app, you'd want JSON responses
+            const resultMatch = html.match(/<p class="result-text">([^<]+)<\/p>/);
+            const filenameMatch = html.match(/name="([^"]+)"/);
+
+            if (resultMatch && filenameMatch) {
+                const result = resultMatch[1];
+                const filename = fileInput.files[0].name;
+
+                // Handle successful analysis
+                await handleAnalysisSuccess(result, filename);
+
+                // Update the page content with the result
+                const resultSection = document.getElementById("resultSection");
+                if (resultSection) {
+                    resultSection.remove();
+                }
+
+                // Create new result section
+                const newResultSection = document.createElement("div");
+                newResultSection.className = "result-section";
+                newResultSection.id = "resultSection";
+
+                const resultClass = result.toLowerCase().includes('mature') ? 'mature' :
+                                  result.toLowerCase().includes('premature') ? 'premature' : 'immature';
+
+                newResultSection.innerHTML = `
+                    <div class="result-box ${resultClass}">
+                        <div class="result-header">
+                            <div class="result-icon">
+                                ${resultClass === 'mature' ? '' : resultClass === 'premature' ? '' : ''}
+                            </div>
+                            <h3>Classification Result</h3>
+                        </div>
+                        <div class="result-content">
+                            <p class="result-text">${result}</p>
+                            <div class="confidence-meter">
+                                <div class="confidence-bar">
+                                    <div class="confidence-fill" style="width: 85%"></div>
+                                </div>
+                                <span class="confidence-text">85% Confidence</span>
+                            </div>
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn btn--primary" onclick="scrollToUpload()">Analyze Another</button>
+                        </div>
+                    </div>
+                `;
+
+                // Insert result section after upload box
+                const uploadSection = document.querySelector(".upload-section");
+                uploadSection.appendChild(newResultSection);
+
+                // Scroll to result
+                setTimeout(() => {
+                    newResultSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+                }, 100);
+
+            } else {
+                showError("Analysis completed but couldn't parse result");
+            }
+        } else {
+            showError("Analysis failed. Please try again.");
+        }
+
+    } catch (error) {
+        console.error('Error during analysis:', error);
+        showError("Network error. Please check your connection and try again.");
+    } finally {
+        // Hide loading state
+        loadingState.style.display = "none";
+        submitBtn.style.display = "inline-block";
+        clearBtn.style.display = "inline-block";
+
+        // Clear the file input after analysis completion (success or failure)
+        fileInput.value = "";
+        clearFile();
+    }
 });
+
+// Handle successful analysis and store in IndexedDB
+async function handleAnalysisSuccess(result, filename) {
+    try {
+        // Create analysis entry
+        const analysisEntry = {
+            id: Date.now(), // Use timestamp as unique ID
+            filename: filename,
+            result: result,
+            confidence: 85, // This would come from your ML model
+            timestamp: new Date().toISOString(),
+            filepath: `uploads/${filename}`
+        };
+
+        // Store in IndexedDB
+        await analysisDB.addAnalysis(analysisEntry);
+
+        // Immediately update recent analyses display with the new analysis
+        updateRecentAnalysesWithNewAnalysis(analysisEntry);
+
+        // Show success message
+        showSuccess("Analysis completed and saved to history!");
+
+    } catch (error) {
+        console.error('Error storing analysis:', error);
+        showError("Analysis completed but failed to save to history");
+    }
+}
+
+// Success message display function
+function showSuccess(message) {
+    const successDiv = document.createElement("div");
+    successDiv.className = "success-message";
+    successDiv.textContent = message;
+    successDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #28a745;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 1000;
+        animation: slideIn 0.3s ease;
+    `;
+
+    document.body.appendChild(successDiv);
+
+    setTimeout(() => {
+        successDiv.remove();
+    }, 5000);
+}
+
+// Refresh recent analyses after successful analysis
+function refreshRecentAnalyses() {
+    // Reload recent analyses after a successful analysis
+    loadRecentAnalyses();
+}
 
 // Error display function
 function showError(message) {
@@ -303,6 +480,258 @@ function scrollToUpload() {
         });
     }
 }
+
+// Load recent analyses from IndexedDB
+async function loadRecentAnalyses() {
+    try {
+        const recentAnalyses = await analysisDB.getRecentAnalyses(5);
+
+        const recentAnalysesList = document.getElementById('recentAnalysesList');
+        const noAnalyses = document.getElementById('noAnalyses');
+
+        if (recentAnalyses.length === 0) {
+            noAnalyses.style.display = 'block';
+            return;
+        }
+
+        noAnalyses.style.display = 'none';
+
+        recentAnalysesList.innerHTML = recentAnalyses.map(analysis => createRecentAnalysisItem(analysis)).join('');
+    } catch (error) {
+        console.error('Error loading recent analyses:', error);
+        // Fallback to server API
+        try {
+            const response = await fetch('/backend/api/history/recent?limit=5');
+            const recentAnalyses = await response.json();
+
+            const recentAnalysesList = document.getElementById('recentAnalysesList');
+            const noAnalyses = document.getElementById('noAnalyses');
+
+            if (recentAnalyses.length === 0) {
+                noAnalyses.style.display = 'block';
+                return;
+            }
+
+            noAnalyses.style.display = 'none';
+
+            recentAnalysesList.innerHTML = recentAnalyses.map(analysis => createRecentAnalysisItem(analysis)).join('');
+        } catch (fallbackError) {
+            console.error('Error in fallback loading:', fallbackError);
+        }
+    }
+}
+
+// Create recent analysis item HTML
+function createRecentAnalysisItem(analysis) {
+    const timestamp = new Date(analysis.timestamp);
+    const timeAgo = formatTimeAgo(timestamp);
+    const resultClass = analysis.result.toLowerCase().includes('mature') ? 'mature' :
+                      analysis.result.toLowerCase().includes('premature') ? 'premature' : 'immature';
+
+    return `
+        <div class="analysis-item">
+            <div class="analysis-filename">${analysis.filename}</div>
+            <div class="analysis-result ${resultClass}">
+                <span class="result-icon">
+                    ${resultClass === 'mature' ? '' : resultClass === 'premature' ? '' : ''}
+                </span>
+                <span class="result-text">${analysis.result}</span>
+            </div>
+            <div class="analysis-confidence">${analysis.confidence}%</div>
+            <div class="analysis-time">${timeAgo}</div>
+        </div>
+    `;
+}
+
+// Format time ago
+function formatTimeAgo(date) {
+    const now = new Date();
+    const diff = now - date;
+
+    const minutes = Math.floor(diff / (1000 * 60));
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    if (minutes < 1) return "Just now";
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    return `${days}d ago`;
+}
+
+// Immediately update recent analyses with new analysis
+function updateRecentAnalysesWithNewAnalysis(analysis) {
+    const recentAnalysesList = document.getElementById('recentAnalysesList');
+    const noAnalyses = document.getElementById('noAnalyses');
+
+    // Hide "no analyses" message if it's showing
+    if (noAnalyses) {
+        noAnalyses.style.display = 'none';
+    }
+
+    // Create the new analysis item HTML
+    const newAnalysisItem = createRecentAnalysisItem(analysis);
+
+    // Insert the new analysis at the beginning of the list
+    if (recentAnalysesList.children.length > 0) {
+        // Insert before the first child
+        recentAnalysesList.insertAdjacentHTML('afterbegin', newAnalysisItem);
+    } else {
+        // If no existing analyses, just set the innerHTML
+        recentAnalysesList.innerHTML = newAnalysisItem;
+    }
+
+    // Keep only the 5 most recent analyses
+    while (recentAnalysesList.children.length > 5) {
+        recentAnalysesList.removeChild(recentAnalysesList.lastChild);
+    }
+}
+
+// IndexedDB setup and management
+class AnalysisDB {
+    constructor() {
+        this.dbName = 'CoconutAnalysisDB';
+        this.dbVersion = 1;
+        this.storeName = 'analyses';
+        this.db = null;
+    }
+
+    async init() {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(this.dbName, this.dbVersion);
+
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => {
+                this.db = request.result;
+                resolve();
+            };
+
+            request.onupgradeneeded = (event) => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains(this.storeName)) {
+                    const store = db.createObjectStore(this.storeName, { keyPath: 'id', autoIncrement: true });
+                    store.createIndex('timestamp', 'timestamp', { unique: false });
+                    store.createIndex('filename', 'filename', { unique: false });
+                }
+            };
+        });
+    }
+
+    async addAnalysis(analysis) {
+        if (!this.db) await this.init();
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction([this.storeName], 'readwrite');
+            const store = transaction.objectStore(this.storeName);
+
+            const analysisWithMeta = {
+                ...analysis,
+                timestamp: new Date().toISOString(),
+                synced: false
+            };
+
+            const request = store.add(analysisWithMeta);
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    async getAllAnalyses() {
+        if (!this.db) await this.init();
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction([this.storeName], 'readonly');
+            const store = transaction.objectStore(this.storeName);
+            const request = store.getAll();
+
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    async getRecentAnalyses(limit = 5) {
+        if (!this.db) await this.init();
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction([this.storeName], 'readonly');
+            const store = transaction.objectStore(this.storeName);
+            const index = store.index('timestamp');
+            const request = index.openCursor(null, 'prev'); // Most recent first
+
+            const results = [];
+            request.onsuccess = (event) => {
+                const cursor = event.target.result;
+                if (cursor && results.length < limit) {
+                    results.push(cursor.value);
+                    cursor.continue();
+                } else {
+                    resolve(results);
+                }
+            };
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    async deleteAnalysis(id) {
+        if (!this.db) await this.init();
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction([this.storeName], 'readwrite');
+            const store = transaction.objectStore(this.storeName);
+            const request = store.delete(id);
+
+            request.onsuccess = () => resolve();
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+    async clearAllAnalyses() {
+        if (!this.db) await this.init();
+
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction([this.storeName], 'readwrite');
+            const store = transaction.objectStore(this.storeName);
+            const request = store.clear();
+
+            request.onsuccess = () => resolve();
+            request.onerror = () => reject(request.error);
+        });
+    }
+
+
+}
+
+// Global database instance
+const analysisDB = new AnalysisDB();
+
+// Load recent analyses when page loads
+document.addEventListener("DOMContentLoaded", async function() {
+    try {
+        // Initialize database
+        await analysisDB.init();
+
+        // Load recent analyses from local storage only
+        await loadRecentAnalyses();
+
+        // Scroll to results if present
+        setTimeout(function() {
+            const resultSection = document.getElementById("resultSection");
+            if (resultSection) {
+                resultSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+            }
+        }, 100);
+    } catch (error) {
+        console.error('Error initializing app:', error);
+        // Show empty state if IndexedDB fails
+        const recentAnalysesList = document.getElementById('recentAnalysesList');
+        const noAnalyses = document.getElementById('noAnalyses');
+        if (recentAnalysesList && noAnalyses) {
+            noAnalyses.style.display = 'block';
+        }
+    }
+});
 </script>
 
 <style>
