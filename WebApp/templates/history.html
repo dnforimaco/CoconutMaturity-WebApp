@@ -61,6 +61,24 @@
     </div>
 </div>
 
+<!-- Clear All Confirmation Modal -->
+<div class="modal" id="clearAllModal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Clear All History</h3>
+            <button class="modal-close" id="clearAllModalClose">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="warning-icon">⚠️</div>
+            <p>Are you sure you want to delete <strong>all</strong> analysis history? This action cannot be undone and will permanently remove all your saved analyses.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn--secondary" id="cancelClearAll">Cancel</button>
+            <button class="btn btn--primary btn-delete-confirm" id="confirmClearAll">Clear All</button>
+        </div>
+    </div>
+</div>
+
 <script>
 // IndexedDB setup and management for History page
 class HistoryAnalysisDB {
@@ -171,6 +189,10 @@ const deleteModal = document.getElementById("deleteModal");
 const modalClose = document.getElementById("modalClose");
 const cancelDelete = document.getElementById("cancelDelete");
 const confirmDelete = document.getElementById("confirmDelete");
+const clearAllModal = document.getElementById("clearAllModal");
+const clearAllModalClose = document.getElementById("clearAllModalClose");
+const cancelClearAll = document.getElementById("cancelClearAll");
+const confirmClearAll = document.getElementById("confirmClearAll");
 
 let deleteTargetId = null;
 let filteredHistory = [];
@@ -396,23 +418,37 @@ async function deleteItem() {
     }
 }
 
+// Show clear all modal
+function showClearAllModal() {
+    clearAllModal.style.display = "flex";
+}
+
+// Hide clear all modal
+function hideClearAllModal() {
+    clearAllModal.style.display = "none";
+}
+
 // Clear all history from local storage only
 async function clearAllHistory() {
     if (analysisHistory.length === 0) return;
 
-    if (confirm("Are you sure you want to delete all analysis history? This action cannot be undone.")) {
-        try {
-            // Clear all from IndexedDB
-            await historyDB.clearAllAnalyses();
+    showClearAllModal();
+}
 
-            // Clear local array and refresh display
-            analysisHistory = [];
-            renderHistory();
-            showMessage("All analyses cleared successfully!", "success");
-        } catch (error) {
-            console.error('Error clearing history:', error);
-            showMessage("Error clearing history", "error");
-        }
+// Execute clear all after confirmation
+async function executeClearAll() {
+    try {
+        // Clear all from IndexedDB
+        await historyDB.clearAllAnalyses();
+
+        // Clear local array and refresh display
+        analysisHistory = [];
+        renderHistory();
+        hideClearAllModal();
+        showMessage("All analyses cleared successfully!", "success");
+    } catch (error) {
+        console.error('Error clearing history:', error);
+        showMessage("Error clearing history", "error");
     }
 }
 
@@ -455,6 +491,11 @@ cancelDelete.addEventListener("click", hideDeleteModal);
 confirmDelete.addEventListener("click", deleteItem);
 clearAllBtn.addEventListener("click", clearAllHistory);
 
+// Clear All Modal Event Listeners
+clearAllModalClose.addEventListener("click", hideClearAllModal);
+cancelClearAll.addEventListener("click", hideClearAllModal);
+confirmClearAll.addEventListener("click", executeClearAll);
+
 // Search input event listener
 searchInput.addEventListener("input", function(e) {
     searchHistory(e.target.value);
@@ -479,10 +520,20 @@ deleteModal.addEventListener("click", function(e) {
     }
 });
 
+// Close clear all modal when clicking outside
+clearAllModal.addEventListener("click", function(e) {
+    if (e.target === clearAllModal) {
+        hideClearAllModal();
+    }
+});
+
 // Keyboard events
 document.addEventListener("keydown", function(e) {
     if (e.key === "Escape" && deleteModal.style.display !== "none") {
         hideDeleteModal();
+    }
+    if (e.key === "Escape" && clearAllModal.style.display !== "none") {
+        hideClearAllModal();
     }
 });
 </script>
@@ -724,7 +775,7 @@ document.addEventListener("keydown", function(e) {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 12px;
+    padding: 5px 70px;
     border-radius: 20px;
     font-size: 13px;
     font-weight: 600;
@@ -943,6 +994,13 @@ document.addEventListener("keydown", function(e) {
     margin: 0;
     color: #333;
     line-height: 1.6;
+}
+
+.modal-body .warning-icon {
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 16px;
+    display: block;
 }
 
 .modal-footer {
