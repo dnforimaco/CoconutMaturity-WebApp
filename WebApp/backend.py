@@ -77,7 +77,7 @@ def classify():
         # 🔗 Connect your ML model here
         # from model import classify_audio
         # result = classify_audio(filepath)
-        result = "Mature Coconut"  # temporary placeholder
+        result = "Premature Coconut"  # temporary placeholder
 
         # Store analysis in history
         analysis_entry = {
