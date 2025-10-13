@@ -1,3 +1,4 @@
+detect
 
 {% extends "base.html" %}
 {% block content %}
@@ -112,13 +113,13 @@
                 <div class="result-box
                     {% if 'Mature' in result %} mature
                     {% elif 'Premature' in result %} premature
-                    {% elif 'Immature' in result %} immature
+                    {% elif 'Overmature' in result %} overmature
                     {% endif %}">
                     <div class="result-header">
                         <div class="result-icon">
                             {% if 'Mature' in result %}
                             {% elif 'Premature' in result %}
-                            {% elif 'Immature' in result %}
+                            {% elif 'Overmature' in result %}
                             {% endif %}
                         </div>
                         <h3>Classification Result</h3>
@@ -308,7 +309,7 @@ form.addEventListener("submit", async function(e) {
                 newResultSection.id = "resultSection";
 
                 const resultClass = result.toLowerCase().includes('mature') ? 'mature' :
-                                  result.toLowerCase().includes('premature') ? 'premature' : 'immature';
+                                  result.toLowerCase().includes('premature') ? 'premature' : 'overmature';
 
                 newResultSection.innerHTML = `
                     <div class="result-box ${resultClass}">
@@ -525,18 +526,14 @@ async function loadRecentAnalyses() {
 function createRecentAnalysisItem(analysis) {
     const timestamp = new Date(analysis.timestamp);
     const timeAgo = formatTimeAgo(timestamp);
-    const resultClass = analysis.result.toLowerCase().includes('mature') ? 'mature' :
-                      analysis.result.toLowerCase().includes('premature') ? 'premature' : 'immature';
+    const resultClass = analysis.result.toLowerCase().includes('overmature') ? 'overmature' :
+                      analysis.result.toLowerCase().includes('premature') ? 'premature' :
+                      analysis.result.toLowerCase().includes('mature') ? 'mature' : 'overmature';
 
     return `
         <div class="analysis-item">
             <div class="analysis-filename">${analysis.filename}</div>
-            <div class="analysis-result ${resultClass}">
-                <span class="result-icon">
-                    ${resultClass === 'mature' ? '' : resultClass === 'premature' ? '' : ''}
-                </span>
-                <span class="result-text">${analysis.result}</span>
-            </div>
+            <div class="analysis-result-text ${resultClass}">${analysis.result}</div>
             <div class="analysis-confidence">${analysis.confidence}%</div>
             <div class="analysis-time">${timeAgo}</div>
         </div>

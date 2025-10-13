@@ -238,7 +238,9 @@ function applyFilters() {
     if (filterType !== 'all') {
         filtered = filtered.filter(item => {
             const result = item.result.toLowerCase();
-            return result.includes(filterType) || result.includes(filterType + ' coconut');
+            // Use exact word matching to avoid partial matches
+            const resultWords = result.split(' ');
+            return resultWords.includes(filterType) || resultWords.includes(filterType + ' coconut');
         });
     }
 
@@ -312,18 +314,14 @@ function createHistoryItem(item) {
     const result = item.result.toLowerCase();
 
     // Determine the CSS class based on the result content
-    let resultClass = 'immature'; // default
-    let resultIcon = '❌';
+    let resultClass = 'premature'; // default
 
-    if (result.includes('mature')) {
-        resultClass = 'mature';
-        resultIcon = '✅';
+    if (result.includes('overmature')) {
+        resultClass = 'overmature';
     } else if (result.includes('premature')) {
         resultClass = 'premature';
-        resultIcon = '⚠️';
-    } else if (result.includes('overmature')) {
-        resultClass = 'immature'; // Use immature styling for overmature
-        resultIcon = '❌';
+    } else if (result.includes('mature')) {
+        resultClass = 'mature';
     }
 
     return `
@@ -338,12 +336,7 @@ function createHistoryItem(item) {
                 </div>
 
                 <div class="history-result">
-                    <div class="result-badge ${resultClass}">
-                        <span class="result-icon">
-                            ${resultIcon}
-                        </span>
-                        <span class="result-text">${item.result}</span>
-                    </div>
+                    <div class="result-text ${resultClass}">${item.result}</div>
                 </div>
 
                 <div class="history-confidence">
@@ -729,22 +722,24 @@ document.addEventListener("keydown", function(e) {
 .history-item-main {
     display: flex;
     align-items: center;
-    gap: 32px;
-    padding: 20px 24px;
+    gap: 24px;
+    padding: 24px 28px;
     justify-content: flex-start;
+    position: relative;
+    min-height: 80px;
 }
 
 .history-filename {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
     flex: 1;
     min-width: 0;
     justify-content: flex-start;
 }
 
 .file-icon {
-    font-size: 24px;
+    font-size: 28px;
     flex-shrink: 0;
 }
 
@@ -755,85 +750,94 @@ document.addEventListener("keydown", function(e) {
 .filename {
     font-weight: 600;
     color: #046307;
-    font-size: 15px;
-    margin-bottom: 2px;
+    font-size: 16px;
+    margin-bottom: 4px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .filesize {
-    font-size: 12px;
+    font-size: 13px;
     color: #666;
 }
 
 .history-result {
-    min-width: 120px;
-}
-
-.result-badge {
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    width: 260px;
     display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 70px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
     justify-content: center;
 }
 
-.result-badge.mature {
+.result-text {
+    display: inline-block;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    padding: 12px 24px;
+    border-radius: 25px;
+    width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.result-text.mature {
     background: linear-gradient(135deg, #e8ffe8 0%, #deffde 100%);
     color: #028c0a;
     border: 2px solid rgba(2, 140, 10, 0.2);
 }
 
-.result-badge.premature {
+.result-text.premature {
     background: linear-gradient(135deg, #fff8e8 0%, #fff2d6 100%);
     color: #f5a623;
     border: 2px solid rgba(245, 166, 35, 0.2);
 }
 
-.result-badge.immature {
+.result-text.overmature {
     background: linear-gradient(135deg, #ffe8e8 0%, #ffd6d6 100%);
     color: #e74c3c;
     border: 2px solid rgba(231, 76, 60, 0.2);
 }
 
 .history-confidence {
-    min-width: 80px;
+    min-width: 90px;
     text-align: center;
 }
 
 .confidence-label {
-    font-size: 11px;
+    font-size: 12px;
     color: #666;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .confidence-value {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     color: #046307;
 }
 
 .history-time {
-    min-width: 80px;
+    min-width: 90px;
     text-align: center;
 }
 
 .time-label {
-    font-size: 11px;
+    font-size: 12px;
     color: #666;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .time-value {
-    font-size: 13px;
+    font-size: 14px;
     color: #333;
     font-weight: 500;
 }
