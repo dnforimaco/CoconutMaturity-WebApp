@@ -1,4 +1,3 @@
-detect
 
 {% extends "base.html" %}
 {% block content %}
@@ -69,25 +68,92 @@ detect
             </div>
 
             <form id="uploadForm" enctype="multipart/form-data">
-                <div class="file-input-wrapper">
-                    <input type="file" id="audioFile" name="audio" accept=".wav,.mp3,.ogg,.m4a">
-                    <div class="file-input-display">
-                        <div class="file-input-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24"><g fill="none" stroke="#302f2f" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path fill="#302f2f" fill-opacity="0" stroke-dasharray="20" stroke-dashoffset="20" d="M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5"><animate attributeName="d" begin="0.5s" dur="1.5s" repeatCount="indefinite" values="M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5;M12 15h2v-3h2.5l-4.5 -4.5M12 15h-2v-3h-2.5l4.5 -4.5;M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5"/><animate fill="freeze" attributeName="fill-opacity" begin="0.7s" dur="0.5s" values="0;1"/><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="20;0"/></path><path stroke-dasharray="14" stroke-dashoffset="14" d="M6 19h12"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.5s" dur="0.2s" values="14;0"/></path></g></svg>
+                <div class="multi-file-upload">
+                    <div class="upload-slot" data-slot="1">
+                        <div class="slot-header">
+                            <span class="slot-number">Recording 1</span>
+                            <span class="slot-status" id="status1">Empty</span>
                         </div>
-                        <div class="file-input-text">
-                            <p class="primary-text">Click to browse or drag & drop</p>
-                            <p class="secondary-text">WAV, MP3, OGG up to 10MB</p>
+                        <div class="file-input-wrapper">
+                            <input type="file" class="audioFile" name="audio_files" accept=".wav,.mp3,.ogg,.m4a" data-slot="1">
+                            <div class="file-input-display">
+                                <div class="file-input-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24"><g fill="none" stroke="#302f2f" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path fill="#302f2f" fill-opacity="0" stroke-dasharray="20" stroke-dashoffset="20" d="M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5"><animate attributeName="d" begin="0.5s" dur="1.5s" repeatCount="indefinite" values="M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5;M12 15h2v-3h2.5l-4.5 -4.5M12 15h-2v-3h-2.5l4.5 -4.5;M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5"/><animate fill="freeze" attributeName="fill-opacity" begin="0.7s" dur="0.5s" values="0;1"/><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="20;0"/></path><path stroke-dasharray="14" stroke-dashoffset="14" d="M6 19h12"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.5s" dur="0.2s" values="14;0"/></path></g></svg>
+                                </div>
+                                <div class="file-input-text">
+                                    <p class="primary-text">Click to browse</p>
+                                    <p class="secondary-text">WAV, MP3, OGG</p>
+                                </div>
+                            </div>
+                            <div class="file-info" id="fileInfo1" style="display: none;">
+                                <div class="file-details">
+                                    <span class="file-name" id="fileName1"></span>
+                                    <span class="file-size" id="fileSize1"></span>
+                                </div>
+                                <button class="remove-file" data-slot="1">✕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upload-slot" data-slot="2">
+                        <div class="slot-header">
+                            <span class="slot-number">Recording 2</span>
+                            <span class="slot-status" id="status2">Empty</span>
+                        </div>
+                        <div class="file-input-wrapper">
+                            <input type="file" class="audioFile" name="audio_files" accept=".wav,.mp3,.ogg,.m4a" data-slot="2">
+                            <div class="file-input-display">
+                                <div class="file-input-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24"><g fill="none" stroke="#302f2f" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path fill="#302f2f" fill-opacity="0" stroke-dasharray="20" stroke-dashoffset="20" d="M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5"><animate attributeName="d" begin="0.5s" dur="1.5s" repeatCount="indefinite" values="M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5;M12 15h2v-3h2.5l-4.5 -4.5M12 15h-2v-3h-2.5l4.5 -4.5;M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5"/><animate fill="freeze" attributeName="fill-opacity" begin="0.7s" dur="0.5s" values="0;1"/><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="20;0"/></path><path stroke-dasharray="14" stroke-dashoffset="14" d="M6 19h12"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.5s" dur="0.2s" values="14;0"/></path></g></svg>
+                                </div>
+                                <div class="file-input-text">
+                                    <p class="primary-text">Click to browse</p>
+                                    <p class="secondary-text">WAV, MP3, OGG</p>
+                                </div>
+                            </div>
+                            <div class="file-info" id="fileInfo2" style="display: none;">
+                                <div class="file-details">
+                                    <span class="file-name" id="fileName2"></span>
+                                    <span class="file-size" id="fileSize2"></span>
+                                </div>
+                                <button class="remove-file" data-slot="2">✕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upload-slot" data-slot="3">
+                        <div class="slot-header">
+                            <span class="slot-number">Recording 3</span>
+                            <span class="slot-status" id="status3">Empty</span>
+                        </div>
+                        <div class="file-input-wrapper">
+                            <input type="file" class="audioFile" name="audio_files" accept=".wav,.mp3,.ogg,.m4a" data-slot="3">
+                            <div class="file-input-display">
+                                <div class="file-input-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24"><g fill="none" stroke="#302f2f" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path fill="#302f2f" fill-opacity="0" stroke-dasharray="20" stroke-dashoffset="20" d="M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5"><animate attributeName="d" begin="0.5s" dur="1.5s" repeatCount="indefinite" values="M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5;M12 15h2v-3h2.5l-4.5 -4.5M12 15h-2v-3h-2.5l4.5 -4.5;M12 15h2v-6h2.5l-4.5 -4.5M12 15h-2v-6h-2.5l4.5 -4.5"/><animate fill="freeze" attributeName="fill-opacity" begin="0.7s" dur="0.5s" values="0;1"/><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="20;0"/></path><path stroke-dasharray="14" stroke-dashoffset="14" d="M6 19h12"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.5s" dur="0.2s" values="14;0"/></path></g></svg>
+                                </div>
+                                <div class="file-input-text">
+                                    <p class="primary-text">Click to browse</p>
+                                    <p class="secondary-text">WAV, MP3, OGG</p>
+                                </div>
+                            </div>
+                            <div class="file-info" id="fileInfo3" style="display: none;">
+                                <div class="file-details">
+                                    <span class="file-name" id="fileName3"></span>
+                                    <span class="file-size" id="fileSize3"></span>
+                                </div>
+                                <button class="remove-file" data-slot="3">✕</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="upload-actions">
                     <button type="submit" class="btn btn--primary" id="submitBtn">
-                        <span class="btn-text">Analyze Audio</span>
+                        <span class="btn-text">Analyze All Recordings</span>
                         <span class="btn-icon">🔍</span>
                     </button>
-                    <button type="button" class="btn btn--secondary" id="clearBtn">Clear</button>
+                    <button type="button" class="btn btn--secondary" id="clearAllBtn">Clear All</button>
                 </div>
             </form>
 
@@ -117,10 +183,7 @@ detect
                     {% endif %}">
                     <div class="result-header">
                         <div class="result-icon">
-                            {% if 'Mature' in result %}
-                            {% elif 'Premature' in result %}
-                            {% elif 'Overmature' in result %}
-                            {% endif %}
+                            {% if 'Mature' in result %}🌴{% elif 'Premature' in result %}🌱{% elif 'Overmature' in result %}🍂{% endif %}
                         </div>
                         <h3>Classification Result</h3>
                     </div>
@@ -128,9 +191,9 @@ detect
                         <p class="result-text">{{ result }}</p>
                         <div class="confidence-meter">
                             <div class="confidence-bar">
-                                <div class="confidence-fill" style="width: 85%"></div>
+                                <div class="confidence-fill" style="width: {{ confidence }}%"></div>
                             </div>
-                            <span class="confidence-text">85% Confidence</span>
+                            <span class="confidence-text">{{ confidence }}% Confidence</span>
                         </div>
                     </div>
                     <div class="result-actions">
@@ -158,123 +221,184 @@ detect
 </div>
 
 <script>
-const fileInput = document.getElementById("audioFile");
+// Multi-file upload handling for coconut maturity detection
 const form = document.getElementById("uploadForm");
-const fileInputWrapper = document.querySelector(".file-input-wrapper");
-const fileInputDisplay = document.querySelector(".file-input-display");
-const fileInfo = document.getElementById("fileInfo");
-const fileName = document.getElementById("fileName");
-const fileSize = document.getElementById("fileSize");
-const removeFile = document.getElementById("removeFile");
 const loadingState = document.getElementById("loadingState");
 const submitBtn = document.getElementById("submitBtn");
-const clearBtn = document.getElementById("clearBtn");
+const clearAllBtn = document.getElementById("clearAllBtn");
+const audioFileInputs = document.querySelectorAll(".audioFile");
 
-// File input change handler
-fileInput.addEventListener("change", function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        // Validate file type
-        const validTypes = ['audio/wav', 'audio/mpeg', 'audio/ogg', 'audio/mp4', 'audio/mp3'];
-        if (!validTypes.some(type => file.type.includes(type.split('/')[1]))) {
-            alert("Please select a valid audio file (WAV, MP3, OGG, M4A)");
-            fileInput.value = "";
-            return;
-        }
+// Initialize file slots
+let fileSlots = {
+    1: { file: null, element: null },
+    2: { file: null, element: null },
+    3: { file: null, element: null }
+};
 
-        // Validate file size (10MB limit)
-        if (file.size > 10 * 1024 * 1024) {
-            alert("File size must be less than 10MB");
-            fileInput.value = "";
-            return;
-        }
-
-        displayFileInfo(file);
-        fileInputWrapper.classList.add("has-file");
-    } else {
-        clearFile();
-    }
+// Initialize slot elements
+document.addEventListener("DOMContentLoaded", function() {
+    audioFileInputs.forEach(input => {
+        const slot = parseInt(input.dataset.slot);
+        fileSlots[slot].element = input;
+    });
 });
 
-// Prevent double-click issue by stopping event propagation
-fileInput.addEventListener("click", function(e) {
-    e.stopPropagation();
+// File input change handlers
+audioFileInputs.forEach(input => {
+    input.addEventListener("change", function(e) {
+        const slot = parseInt(this.dataset.slot);
+        const file = e.target.files[0];
+
+        if (file) {
+            // Validate file type
+            const validTypes = ['audio/wav', 'audio/mpeg', 'audio/ogg', 'audio/mp4', 'audio/mp3'];
+            if (!validTypes.some(type => file.type.includes(type.split('/')[1]))) {
+                alert("Please select a valid audio file (WAV, MP3, OGG, M4A)");
+                this.value = "";
+                return;
+            }
+
+            // Validate file size (10MB limit)
+            if (file.size > 10 * 1024 * 1024) {
+                alert("File size must be less than 10MB");
+                this.value = "";
+                return;
+            }
+
+            // Store file and update UI
+            fileSlots[slot].file = file;
+            displayFileInfo(slot, file);
+            updateSlotStatus(slot, "ready");
+        } else {
+            fileSlots[slot].file = null;
+            clearFileInfo(slot);
+            updateSlotStatus(slot, "empty");
+        }
+
+        // Update submit button state
+        updateSubmitButton();
+    });
 });
 
-// Display file information
-function displayFileInfo(file) {
+// Display file information for a specific slot
+function displayFileInfo(slot, file) {
+    const fileInfo = document.getElementById(`fileInfo${slot}`);
+    const fileName = document.getElementById(`fileName${slot}`);
+    const fileSize = document.getElementById(`fileSize${slot}`);
+    const fileInputDisplay = fileInfo.parentElement.querySelector('.file-input-display');
+
     fileName.textContent = file.name;
     fileSize.textContent = formatFileSize(file.size);
     fileInfo.style.display = "flex";
     fileInputDisplay.style.display = "none";
 }
 
-// Format file size
-function formatFileSize(bytes) {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-}
+// Clear file information for a specific slot
+function clearFileInfo(slot) {
+    const fileInfo = document.getElementById(`fileInfo${slot}`);
+    const fileInputDisplay = fileInfo.parentElement.querySelector('.file-input-display');
 
-// Remove file
-removeFile.addEventListener("click", function() {
-    fileInput.value = "";
-    clearFile();
-});
-
-// Clear file display
-function clearFile() {
     fileInfo.style.display = "none";
     fileInputDisplay.style.display = "flex";
-    fileInputWrapper.classList.remove("has-file");
 }
 
-// Drag and drop functionality
-fileInputWrapper.addEventListener("click", function() {
-    fileInput.click();
-});
+// Update slot status
+function updateSlotStatus(slot, status) {
+    const statusElement = document.getElementById(`status${slot}`);
+    statusElement.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+    statusElement.className = `slot-status ${status}`;
+}
 
-fileInputWrapper.addEventListener("dragover", function(e) {
-    e.preventDefault();
-    fileInputWrapper.classList.add("drag-over");
-});
+// Update submit button based on filled slots
+function updateSubmitButton() {
+    const filledSlots = Object.values(fileSlots).filter(slot => slot.file !== null).length;
+    // Enable button when files are cleared (0 files) or when all 3 slots are filled
+    submitBtn.disabled = filledSlots > 0 && filledSlots !== 3;
+}
 
-fileInputWrapper.addEventListener("dragleave", function(e) {
-    e.preventDefault();
-    fileInputWrapper.classList.remove("drag-over");
-});
-
-fileInputWrapper.addEventListener("drop", function(e) {
-    e.preventDefault();
-    fileInputWrapper.classList.remove("drag-over");
-
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-        fileInput.files = files;
-        fileInput.dispatchEvent(new Event("change"));
+// Remove file from slot
+document.addEventListener("click", function(e) {
+    if (e.target.classList.contains("remove-file")) {
+        const slot = parseInt(e.target.dataset.slot);
+        fileSlots[slot].element.value = "";
+        fileSlots[slot].file = null;
+        clearFileInfo(slot);
+        updateSlotStatus(slot, "empty");
+        updateSubmitButton();
     }
+});
+
+// Clear all files
+clearAllBtn.addEventListener("click", function() {
+    audioFileInputs.forEach(input => {
+        const slot = parseInt(input.dataset.slot);
+        input.value = "";
+        fileSlots[slot].file = null;
+        clearFileInfo(slot);
+        updateSlotStatus(slot, "empty");
+    });
+    updateSubmitButton();
+});
+
+// Drag and drop functionality for each slot
+document.querySelectorAll('.file-input-wrapper').forEach(wrapper => {
+    const slot = parseInt(wrapper.querySelector('.audioFile').dataset.slot);
+
+    wrapper.addEventListener("click", function(e) {
+        // Only trigger file input click if clicking on the wrapper itself, not child elements
+        if (e.target === this || e.target.classList.contains('file-input-display') ||
+            e.target.classList.contains('file-input-icon') || e.target.classList.contains('file-input-text')) {
+            e.preventDefault();
+            fileSlots[slot].element.click();
+        }
+    });
+
+    wrapper.addEventListener("dragover", function(e) {
+        e.preventDefault();
+        this.classList.add("drag-over");
+    });
+
+    wrapper.addEventListener("dragleave", function(e) {
+        e.preventDefault();
+        this.classList.remove("drag-over");
+    });
+
+    wrapper.addEventListener("drop", function(e) {
+        e.preventDefault();
+        this.classList.remove("drag-over");
+
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileSlots[slot].element.files = files;
+            fileSlots[slot].element.dispatchEvent(new Event("change"));
+        }
+    });
 });
 
 // Form submission with AJAX
 form.addEventListener("submit", async function(e) {
     e.preventDefault(); // Prevent traditional form submission
 
-    if (!fileInput.value) {
-        showError("Please select an audio file first");
+    // Check if all slots are filled
+    const filledSlots = Object.values(fileSlots).filter(slot => slot.file !== null).length;
+    if (filledSlots !== 3) {
+        showError("Please upload exactly 3 audio files for analysis");
         return;
     }
 
     // Show loading state
     submitBtn.style.display = "none";
     loadingState.style.display = "block";
-    clearBtn.style.display = "none";
+    clearAllBtn.style.display = "none";
 
     try {
         // Create FormData for file upload
         const formData = new FormData();
-        formData.append('audio', fileInput.files[0]);
+        Object.values(fileSlots).forEach(slot => {
+            if (slot.file) {
+                formData.append('audio_files', slot.file);
+            }
+        });
 
         // Submit to server
         const response = await fetch('{{ url_for("backend.classify") }}', {
@@ -285,17 +409,16 @@ form.addEventListener("submit", async function(e) {
         if (response.ok) {
             const html = await response.text();
 
-            // Extract result from HTML response (simple approach)
-            // In a production app, you'd want JSON responses
+            // Extract result and confidence from HTML response
             const resultMatch = html.match(/<p class="result-text">([^<]+)<\/p>/);
-            const filenameMatch = html.match(/name="([^"]+)"/);
+            const confidenceMatch = html.match(/<span class="confidence-text">([^<]+)<\/span>/);
 
-            if (resultMatch && filenameMatch) {
+            if (resultMatch) {
                 const result = resultMatch[1];
-                const filename = fileInput.files[0].name;
+                const confidence = confidenceMatch ? confidenceMatch[1] : "85%";
 
                 // Handle successful analysis
-                await handleAnalysisSuccess(result, filename);
+                await handleAnalysisSuccess(result, confidence);
 
                 // Update the page content with the result
                 const resultSection = document.getElementById("resultSection");
@@ -315,7 +438,7 @@ form.addEventListener("submit", async function(e) {
                     <div class="result-box ${resultClass}">
                         <div class="result-header">
                             <div class="result-icon">
-                                ${resultClass === 'mature' ? '' : resultClass === 'premature' ? '' : ''}
+                                ${resultClass === 'mature' ? '🌴' : resultClass === 'premature' ? '🌱' : '🍂'}
                             </div>
                             <h3>Classification Result</h3>
                         </div>
@@ -323,9 +446,9 @@ form.addEventListener("submit", async function(e) {
                             <p class="result-text">${result}</p>
                             <div class="confidence-meter">
                                 <div class="confidence-bar">
-                                    <div class="confidence-fill" style="width: 85%"></div>
+                                    <div class="confidence-fill" style="width: ${confidence.replace('%', '')}%"></div>
                                 </div>
-                                <span class="confidence-text">85% Confidence</span>
+                                <span class="confidence-text">${confidence}</span>
                             </div>
                         </div>
                         <div class="result-actions">
@@ -360,25 +483,31 @@ form.addEventListener("submit", async function(e) {
         // Hide loading state
         loadingState.style.display = "none";
         submitBtn.style.display = "inline-block";
-        clearBtn.style.display = "inline-block";
+        clearAllBtn.style.display = "inline-block";
 
-        // Clear the file input after analysis completion (success or failure)
-        fileInput.value = "";
-        clearFile();
+        // Clear all file inputs after analysis completion (success or failure)
+        clearAllBtn.click();
     }
 });
 
 // Handle successful analysis and store in IndexedDB
-async function handleAnalysisSuccess(result, filename) {
+async function handleAnalysisSuccess(result, confidence) {
     try {
         // Create analysis entry
+        const filenames = Object.values(fileSlots)
+            .filter(slot => slot.file)
+            .map(slot => slot.file.name);
+
         const analysisEntry = {
             id: Date.now(), // Use timestamp as unique ID
-            filename: filename,
+            filename: filenames.join(" + "),
+            files: filenames,
             result: result,
-            confidence: 85, // This would come from your ML model
+            confidence: parseFloat(confidence.replace('%', '')),
             timestamp: new Date().toISOString(),
-            filepath: `uploads/${filename}`
+            filepaths: Object.values(fileSlots)
+                .filter(slot => slot.file)
+                .map(slot => `uploads/${slot.file.name}`)
         };
 
         // Store in IndexedDB
@@ -421,12 +550,6 @@ function showSuccess(message) {
     }, 5000);
 }
 
-// Refresh recent analyses after successful analysis
-function refreshRecentAnalyses() {
-    // Reload recent analyses after a successful analysis
-    loadRecentAnalyses();
-}
-
 // Error display function
 function showError(message) {
     const errorDiv = document.createElement("div");
@@ -452,24 +575,14 @@ function showError(message) {
     }, 5000);
 }
 
-// Clear button functionality
-clearBtn.addEventListener("click", function() {
-    fileInput.value = "";
-    clearFile();
-});
-
-// Scroll to results section when page loads with results
-document.addEventListener("DOMContentLoaded", function() {
-    setTimeout(function() {
-        const resultSection = document.getElementById("resultSection");
-        if (resultSection) {
-            resultSection.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
-            });
-        }
-    }, 100);
-});
+// Format file size
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
 
 // Scroll to upload section
 function scrollToUpload() {
@@ -738,3 +851,4 @@ document.addEventListener("DOMContentLoaded", async function() {
 }
 </style>
 {% endblock %}
+
