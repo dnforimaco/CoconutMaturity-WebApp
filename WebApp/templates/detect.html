@@ -171,37 +171,37 @@
                 </div>
                 <button class="remove-file" id="removeFile">✕</button>
             </div>
-        </div>
 
-        <!-- Result Section -->
-        {% if result %}
-            <div class="result-section" id="resultSection">
-                <div class="result-box
-                    {% if 'Mature' in result %} mature
-                    {% elif 'Premature' in result %} premature
-                    {% elif 'Overmature' in result %} overmature
-                    {% endif %}">
-                    <div class="result-header">
-                        <div class="result-icon">
-                            {% if 'Mature' in result %}🌴{% elif 'Premature' in result %}🌱{% elif 'Overmature' in result %}🍂{% endif %}
-                        </div>
-                        <h3>Classification Result</h3>
-                    </div>
-                    <div class="result-content">
-                        <p class="result-text">{{ result }}</p>
-                        <div class="confidence-meter">
-                            <div class="confidence-bar">
-                                <div class="confidence-fill" style="width: {{ confidence }}%"></div>
+            <!-- Result Section -->
+            {% if result %}
+                <div class="result-section" id="resultSection">
+                    <div class="result-box
+                        {% if 'Mature' in result %} mature
+                        {% elif 'Premature' in result %} premature
+                        {% elif 'Overmature' in result %} overmature
+                        {% endif %}">
+                        <div class="result-header">
+                            <div class="result-icon">
+                                {% if 'Mature' in result %}🌴{% elif 'Premature' in result %}🌱{% elif 'Overmature' in result %}🍂{% endif %}
                             </div>
-                            <span class="confidence-text">{{ confidence }}% Confidence</span>
+                            <h3>Classification Result</h3>
                         </div>
-                    </div>
-                    <div class="result-actions">
-                        <button class="btn btn--primary" onclick="scrollToUpload()">Analyze Another</button>
+                        <div class="result-content">
+                            <p class="result-text">{{ result }}</p>
+                            <div class="confidence-meter">
+                                <div class="confidence-bar">
+                                    <div class="confidence-fill" style="width: {{ confidence }}%"></div>
+                                </div>
+                                <span class="confidence-text">{{ confidence }}% Confidence</span>
+                            </div>
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn btn--primary" onclick="scrollToUpload()">Analyze Another</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
 
         <!-- Recent Analyses Section -->
         <div class="recent-analyses-section">
@@ -457,9 +457,9 @@ form.addEventListener("submit", async function(e) {
                     </div>
                 `;
 
-                // Insert result section after upload box
-                const uploadSection = document.querySelector(".upload-section");
-                uploadSection.appendChild(newResultSection);
+                // Insert result section inside upload box at bottom
+                const uploadBox = document.querySelector(".upload-box");
+                uploadBox.appendChild(newResultSection);
 
                 // Scroll to result
                 setTimeout(() => {
@@ -851,4 +851,3 @@ document.addEventListener("DOMContentLoaded", async function() {
 }
 </style>
 {% endblock %}
-

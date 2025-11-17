@@ -1,6 +1,66 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="detect-container">
+    <!-- History Dashboard -->
+    <div class="history-dashboard" id="historyDashboard">
+        <div class="dashboard-header">
+            <h3>Analysis Summary</h3>
+            <p>Your coconut maturity detection insights</p>
+        </div>
+
+        <div class="dashboard-metrics">
+            <div class="metric-card">
+                <div class="metric-icon">📊</div>
+                <div class="metric-content">
+                    <div class="metric-value" id="totalAnalyses">0</div>
+                    <div class="metric-label">Total Analyses</div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon">⚖️</div>
+                <div class="metric-content">
+                    <div class="metric-value" id="avgConfidence">0%</div>
+                    <div class="metric-label">Avg Confidence</div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon">📈</div>
+                <div class="metric-content">
+                    <div class="metric-value" id="recentWeek">0</div>
+                    <div class="metric-label">Last 7 Days</div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon">🎯</div>
+                <div class="metric-content">
+                    <div class="metric-value" id="mostCommon">--</div>
+                    <div class="metric-label">Most Common</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-charts">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h4>Maturity Distribution</h4>
+                    <p>Breakdown of coconut maturity results</p>
+                </div>
+                <canvas id="maturityChart" width="300" height="300"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h4>Analysis Timeline</h4>
+                    <p>Analyses over the past 30 days</p>
+                </div>
+                <canvas id="timelineChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+
     <!-- History Header -->
     <div class="history-header">
         <div class="history-title">
@@ -213,10 +273,234 @@ async function loadHistory() {
     try {
         analysisHistory = await historyDB.getAllAnalyses();
         renderHistory();
+        updateDashboard();
     } catch (error) {
         console.error('Error loading history:', error);
         showMessage('Error loading history', 'error');
     }
+}
+
+// Update dashboard with analysis data
+function updateDashboard() {
+    showDashboard(); // Always show the dashboard
+
+    // Calculate metrics
+    const totalAnalyses = analysisHistory.length;
+    const avgConfidence = totalAnalyses > 0 ? Math.round(analysisHistory.reduce((sum, item) => sum + item.confidence, 0) / totalAnalyses) : 0;
+
+    // Count last 7 days
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+    const recentWeek = analysisHistory.filter(item => new Date(item.timestamp) >= sevenDaysAgo).length;
+
+    // Count by maturity type
+    const maturityCounts = {
+        mature: 0,
+        premature: 0,
+        overmature: 0
+    };
+
+    analysisHistory.forEach(item => {
+        const result = item.result.toLowerCase();
+        if (result.includes('mature') && !result.includes('overmature')) {
+            maturityCounts.mature++;
+        } else if (result.includes('premature')) {
+            maturityCounts.premature++;
+        } else if (result.includes('overmature')) {
+            maturityCounts.overmature++;
+        }
+    });
+
+    // Find most common
+    const maxCount = Math.max(...Object.values(maturityCounts));
+    let mostCommon = '--';
+    if (maxCount > 0) {
+        const commonTypes = Object.keys(maturityCounts).filter(key => maturityCounts[key] === maxCount);
+        mostCommon = commonTypes[0].charAt(0).toUpperCase() + commonTypes[0].slice(1);
+    }
+
+    // Update metrics display
+    document.getElementById('totalAnalyses').textContent = totalAnalyses;
+    document.getElementById('avgConfidence').textContent = avgConfidence + '%';
+    document.getElementById('recentWeek').textContent = recentWeek;
+    document.getElementById('mostCommon').textContent = mostCommon;
+
+    // Render charts (they will show empty/zero state when no data)
+    renderMaturityChart(maturityCounts);
+    renderTimelineChart();
+}
+
+// Show dashboard
+function showDashboard() {
+    const dashboard = document.getElementById('historyDashboard');
+    dashboard.style.display = 'block';
+}
+
+// Hide dashboard
+function hideDashboard() {
+    const dashboard = document.getElementById('historyDashboard');
+    dashboard.style.display = 'none';
+}
+
+// Render maturity distribution pie chart
+function renderMaturityChart(counts) {
+    const ctx = document.getElementById('maturityChart').getContext('2d');
+
+    // Destroy previous chart if it exists
+    if (window.maturityChartInstance) {
+        window.maturityChartInstance.destroy();
+    }
+
+    const total = Object.values(counts).reduce((sum, count) => sum + count, 0);
+
+    // Always render chart, even when all values are 0
+    window.maturityChartInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Mature', 'Premature', 'Overmature'],
+            datasets: [{
+                data: [counts.mature, counts.premature, counts.overmature],
+                backgroundColor: [
+                    '#28a745',  // Green for mature
+                    '#ffc107',  // Yellow for premature
+                    '#dc3545'   // Red for overmature
+                ],
+                borderWidth: 3,
+                borderColor: '#ffffff',
+                // Add offset to show zero data visually when empty
+                offset: total === 0 ? [1, 1, 1] : [0, 0, 0]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true,
+                        font: {
+                            size: 12,
+                            weight: '500'
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.parsed;
+                            const percentage = total > 0 ? Math.round((value / total) * 100) : 0;
+                            return `${label}: ${value} (${percentage}%)`;
+                        }
+                    }
+                }
+            },
+            cutout: '60%'
+        }
+    });
+}
+
+// Render timeline chart showing analyses over time
+function renderTimelineChart() {
+    const ctx = document.getElementById('timelineChart').getContext('2d');
+
+    // Destroy previous chart if it exists
+    if (window.timelineChartInstance) {
+        window.timelineChartInstance.destroy();
+    }
+
+    // Prepare data for last 30 days
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const dailyCounts = {};
+    analysisHistory.forEach(item => {
+        const date = new Date(item.timestamp);
+        if (date >= thirtyDaysAgo) {
+            const dateKey = date.toISOString().split('T')[0]; // YYYY-MM-DD
+            dailyCounts[dateKey] = (dailyCounts[dateKey] || 0) + 1;
+        }
+    });
+
+    // Create labels and data for all days in the last 30 days
+    const labels = [];
+    const data = [];
+    const today = new Date();
+
+    for (let i = 29; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const dateKey = date.toISOString().split('T')[0];
+        labels.push(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+        data.push(dailyCounts[dateKey] || 0);
+    }
+
+    window.timelineChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Analyses',
+                data: data,
+                borderColor: '#329539',
+                backgroundColor: 'rgba(50, 149, 57, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#329539',
+                pointBorderColor: '#ffffff',
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#ffffff',
+                    bodyColor: '#ffffff',
+                    borderColor: '#329539',
+                    borderWidth: 1
+                }
+            },
+            scales: {
+                x: {
+                    display: true,
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        maxTicksLimit: 7
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    display: true,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    },
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            },
+            elements: {
+                point: {
+                    hoverBorderWidth: 3
+                }
+            }
+        }
+    });
 }
 
 // Search and filter function
@@ -402,6 +686,7 @@ async function deleteItem() {
             // Remove from local array and refresh display
             analysisHistory = analysisHistory.filter(item => item.id !== deleteTargetId);
             renderHistory();
+            updateDashboard();
             hideDeleteModal();
             showMessage("Analysis deleted successfully!", "success");
         } catch (error) {
@@ -437,6 +722,7 @@ async function executeClearAll() {
         // Clear local array and refresh display
         analysisHistory = [];
         renderHistory();
+        updateDashboard();
         hideClearAllModal();
         showMessage("All analyses cleared successfully!", "success");
     } catch (error) {
@@ -1129,6 +1415,202 @@ document.addEventListener("keydown", function(e) {
 @keyframes slideIn {
     from { transform: translateX(100%); opacity: 0; }
     to { transform: translateX(0); opacity: 1; }
+}
+
+/* History Dashboard Styles */
+.history-dashboard {
+    background: white;
+    border-radius: 24px;
+    padding: 32px;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(50, 149, 53, 0.1);
+    transition: all 0.3s ease;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.dashboard-header h3 {
+    font-size: 28px;
+    color: #046307;
+    margin-bottom: 8px;
+    font-weight: 700;
+    font-family: "Poppins", sans-serif;
+}
+
+.dashboard-header p {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+.dashboard-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.metric-card {
+    background: linear-gradient(135deg, #f8fff8 0%, #f0f8f0 100%);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 2px solid rgba(50, 149, 53, 0.15);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(50, 149, 53, 0.08);
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(50, 149, 53, 0.15);
+    border-color: rgba(50, 149, 53, 0.25);
+}
+
+.metric-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+}
+
+.metric-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.metric-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #046307;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.metric-label {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.dashboard-charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+}
+
+.chart-container {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    border: 2px solid rgba(50, 149, 53, 0.1);
+    transition: all 0.3s ease;
+}
+
+.chart-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(50, 149, 53, 0.15);
+    border-color: rgba(50, 149, 53, 0.2);
+}
+
+.chart-header {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.chart-header h4 {
+    font-size: 20px;
+    color: #046307;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+    font-family: "Poppins", sans-serif;
+}
+
+.chart-header p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 300px;
+}
+
+/* Responsive Dashboard */
+@media (max-width: 1024px) {
+    .dashboard-charts {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .history-dashboard {
+        padding: 24px;
+    }
+
+    .dashboard-metrics {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .metric-card {
+        padding: 20px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .metric-value {
+        font-size: 24px;
+    }
+
+    .chart-container {
+        padding: 20px;
+    }
+
+    .chart-header h4 {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .history-dashboard {
+        padding: 16px;
+        margin-bottom: 24px;
+    }
+
+    .dashboard-header h3 {
+        font-size: 24px;
+    }
+
+    .dashboard-metrics {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .metric-card {
+        padding: 16px;
+    }
+
+    .metric-value {
+        font-size: 20px;
+    }
+
+    .metric-label {
+        font-size: 12px;
+    }
+
+    .chart-container {
+        padding: 16px;
+    }
 }
 </style>
 {% endblock %}
