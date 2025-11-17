@@ -1301,7 +1301,7 @@ main{
 
 /* Upload Section */
 .upload-section {
-    max-width: 600px;
+    max-width: 1200px;
     margin: 0 auto;
 }
 
@@ -1831,6 +1831,7 @@ main{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-align: left;
 }
 
 .analysis-result {
@@ -1943,7 +1944,7 @@ main{
     }
 
     .analysis-filename {
-        text-align: center;
+        text-align: left;
         white-space: normal;
         overflow: visible;
     }
@@ -2042,7 +2043,7 @@ main{
 /* Multi-file upload container */
 .multi-file-upload {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     margin-bottom: 32px;
 }
